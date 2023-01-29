@@ -1,5 +1,31 @@
+import LoginPage from "../login";
+import DoctorPage from "../doctor";
+import AttendantPage from "../attendant";
+import AdminPage from "../admin";
+import Header from "../../components/header";
+import { useLogin } from "../../providers/login";
+import { IPages } from "../../interfaces";
+import { compareTimePassedSinceLastLogin } from "../../utils";
+
+const pages = {
+  doctor: <DoctorPage />,
+  attendant: <AttendantPage />,
+  admin: <AdminPage />,
+  login: <LoginPage />,
+};
+
 const HomePage = () => {
-  return <div>Home Page</div>;
+  const { currentloggedUserType, logOut } = useLogin();
+
+  const page: IPages = currentloggedUserType ? currentloggedUserType : "login";
+  compareTimePassedSinceLastLogin(logOut);
+  console.log("compara");
+  return (
+    <>
+      {page !== "login" && <Header />}
+      {pages[page]}
+    </>
+  );
 };
 
 export default HomePage;
