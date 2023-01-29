@@ -24,3 +24,4 @@ export interface ILoginContext {
   verifyUserAuthentication: () => Promise<IUserTypes> | void;
   logOut: () => void;
 }
+export type ILocalStorageTheme = "dark" | "light";

@@ -19,7 +19,6 @@ const HomePage = () => {
 
   const page: IPages = currentloggedUserType ? currentloggedUserType : "login";
   compareTimePassedSinceLastLogin(logOut);
-  console.log("compara");
   return (
     <>
       {page !== "login" && <Header />}
