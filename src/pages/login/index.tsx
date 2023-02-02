@@ -6,7 +6,7 @@ import Lottie from "react-lottie";
 import SuccessLotie from "../../assets/lotties/success.json";
 import {
   Backdrop,
-  Button,
+  // Button,
   Card,
   CardContent,
   FormControl,
@@ -27,6 +27,7 @@ import { useForm } from "react-hook-form";
 import { useLogin } from "../../providers/login";
 import { toast } from "react-hot-toast";
 import { IUserTypes } from "../../interfaces";
+import Button from "../../components/Button";
 
 const LoginPage = () => {
   const defaultOptions = {
@@ -50,7 +51,7 @@ const LoginPage = () => {
   const { handleSubmit, register } = useForm();
 
   const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
+    event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     event.preventDefault();
   };
@@ -150,9 +151,11 @@ const LoginPage = () => {
                   >
                     Login
                   </LoadingButton>
-                  <Button sx={{ margin: "12px 0 0" }} variant="outlined">
-                    Esqueci a senha
-                  </Button>
+                  <Button
+                    title="Esqueci a senha"
+                    sx={{ margin: "12px 0 0" }}
+                    variant="outlined"
+                  />
                 </FormGroup>
               </form>
             </CardContent>
