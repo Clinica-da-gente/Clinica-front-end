@@ -21,7 +21,7 @@ const HomePage = () => {
   compareTimePassedSinceLastLogin(logOut);
   return (
     <>
-      {page !== "login" && <Header />}
+      {/* {page !== "login" && <Header />} */}
       {pages[page]}
     </>
   );

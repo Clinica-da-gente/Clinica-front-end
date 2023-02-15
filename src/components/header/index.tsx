@@ -1,3 +1,9 @@
+import * as React from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useLogin } from "../../providers/login";
+import { stringAvatar } from "../../utils";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -11,24 +17,28 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
-import * as React from "react";
-import { useLogin } from "../../providers/login";
-import { stringAvatar } from "../../utils";
 
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = [
+  { name: "Nova Consulta", path: "/newAppointment" },
+  { name: "Orçamento de Exames", path: "/examBudget" },
+  { name: "Pesquisar Consultas", path: "/searchAppointment" },
+  { name: "Pacientes", path: "/patients" },
+];
+
+const settings = ["Perfil", "Conta", "Sair"];
 
 const Header = () => {
   const { logOut } = useLogin();
+  const navigate = useNavigate();
 
   const userInfo = JSON.parse(localStorage.getItem("@UserInfo") || "");
   const userName = userInfo.nome || "user";
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
+    null,
   );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
+    null,
   );
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -46,6 +56,10 @@ const Header = () => {
     setAnchorElUser(null);
   };
 
+  const handleChangePage = (page: string) => {
+    navigate(page);
+  };
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -56,8 +70,9 @@ const Header = () => {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="/"
+            // component="a"
+            // href="/"
+            onClick={() => handleChangePage("/")}
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -66,6 +81,7 @@ const Header = () => {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              cursor: "pointer",
             }}
           >
             CLINICA
@@ -100,9 +116,9 @@ const Header = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {pages.map((page, index) => (
+                <MenuItem key={index} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{page.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -113,8 +129,9 @@ const Header = () => {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href=""
+            // component="a"
+            // href=""
+            onClick={() => handleChangePage("/")}
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -124,24 +141,25 @@ const Header = () => {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              cursor: "pointer",
             }}
           >
             CLINICA
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {pages.map((page, index) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
+                key={index}
+                onClick={() => handleChangePage(page.path)}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                {page.name}
               </Button>
             ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Configurações">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt={userName} {...stringAvatar(userName)} />
               </IconButton>
@@ -165,7 +183,7 @@ const Header = () => {
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography
-                    onClick={() => setting === "Logout" && logOut()}
+                    onClick={() => setting === "Sair" && logOut()}
                     textAlign="center"
                   >
                     {setting}
