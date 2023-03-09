@@ -20,6 +20,7 @@
     "@types/react-lottie": "^1.2.6",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.2.5",
+    "dayjs": "^1.11.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.42.1",
