@@ -51,7 +51,7 @@ export const LoginProvider = ({ children }: IProvider) => {
           const userType = await setUserInfo();
           setCurrentloggedUserType(userType);
         })
-        .catch(() => setCurrentloggedUserType(""));
+        .catch(() => logOut());
     }
     return;
   };
