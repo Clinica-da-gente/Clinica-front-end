@@ -4,7 +4,6 @@ const AdminPage = () => {
   return (
     <div>
       Admin Page
-      {/* <ModalAddPatient /> */}
     </div>
   );
 };

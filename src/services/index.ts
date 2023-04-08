@@ -21,6 +21,10 @@ export const getUserInfo = async () => {
   });
 };
 
+export const getAllPatients = async () => {
+  return await api.get("/pacientes");
+};
+
 export const imgur_api = axios.create({
   baseURL: "https://imgur-api-uploader.onrender.com/",
 });
