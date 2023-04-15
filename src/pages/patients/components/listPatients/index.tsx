@@ -1,33 +1,55 @@
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+
 import {
   Autocomplete,
   Box,
   Card,
   CardContent,
+  FormControl,
   TextField,
   Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import SaveAsIcon from "@mui/icons-material/SaveAs";
+import CloseIcon from "@mui/icons-material/Close";
 import Button from "../../../../components/Button";
+
 import { useTheme } from "../../../../providers/theme";
 import { usePatients } from "../../../../providers/patients";
-import { useEffect, useState } from "react";
 import api from "../../../../services";
 import ModalAddPatient from "../../../../components/modalAddPatient";
+import * as Yup from "yup";
+import { toast } from "react-hot-toast";
+import InputMask from "react-input-mask";
 
 export const ListPatient = () => {
   const [patients, setPatients] = useState<any>([]);
-  // dentro de selectPatient terá o paciente selecionado no campo de pesquisa
-  // dentro desses dados terão tbm os dados de últimos atendimentos, ou precisa ser buscado assim que o paciente for selecionado, criar um state e mostrar
-  // na tela de últimos atenidmentos
   const [selectedPatient, setSelectedPatient] = useState<any>(null);
+  const [editPatient, setEditPatient] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [lastAppointment, setLastAppointment] = useState<any>([
     { data: "25/02/2023", tipo: "consulta", profissional: "Dr. Lin Habey" },
     { data: "29/02/2023", tipo: "exame geral", profissional: "Dra. Isadora" },
   ]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { currentTheme } = useTheme();
-  // const { patients, fetchPatients } = usePatients();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ defaultValues: { ...editPatient } });
+
+  const schema = Yup.object().shape({
+    cpf: Yup.string().required("CPF é obrigatório"),
+    data_nascimento: Yup.string().required("Data de nascimento é obrigatória"),
+    email: Yup.string()
+      .email("E-mail inválido")
+      .required("E-mail é obrigatório"),
+    id_convenio: Yup.string().required("ID do convênio é obrigatório"),
+    nome: Yup.string().required("Nome é obrigatório"),
+    telefone: Yup.string().required("Telefone é obrigatório"),
+  });
 
   const getPatients = async () => {
     await api.get("/pacientes").then((res) => setPatients(res.data));
@@ -36,10 +58,6 @@ export const ListPatient = () => {
   useEffect(() => {
     getPatients();
   }, [patients]);
-
-  // const teste = async () => {
-  //   await getPatients().then((res: any) => console.log(res));
-  // };
 
   const verConsulta = (value: any) => {
     try {
@@ -51,14 +69,28 @@ export const ListPatient = () => {
     console.log(value);
   };
 
-  const atualizarDadosPaciente = (value: any) => {
+  const setPatientDataEditable = (value: any) => {
+    setEditPatient(value);
+  };
+
+  const updatePatientData = async (value: any) => {
+    const token = localStorage.getItem("@UserToken");
+    setIsLoading(true);
     try {
-      setIsLoading(true);
+      await api.patch(`pacientes/${value._id}`, editPatient, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      toast.success("Paciente atualizado sucesso!");
     } catch (error) {
+      console.log(error);
+      toast.error("Ocorreu um erro, tente novamente!");
     } finally {
       setIsLoading(false);
+      setSelectedPatient(editPatient);
+      setEditPatient(null);
     }
-    console.log(value);
   };
 
   return (
@@ -111,47 +143,187 @@ export const ListPatient = () => {
                 sx={{ background: currentTheme === "dark" ? "" : "" }}
               >
                 {selectedPatient && selectedPatient !== undefined ? (
-                  <Box width="100%" display="flex">
-                    <Box
-                      // width="50%"
-                      display="flex"
-                      flex={1}
-                      flexDirection="column"
-                      gap={3}
+                  <Box width="100%" display="flex" gap={3}>
+                    <FormControl
+                      sx={{
+                        display: "flex",
+                        flex: 1,
+                        flexDirection: "column",
+                        gap: 3,
+                      }}
+                      onSubmit={handleSubmit(updatePatientData)}
                     >
-                      <Typography fontSize={20}>
-                        Nome: {selectedPatient.nome}
-                      </Typography>
-                      <Typography fontSize={20}>
-                        CPF: {selectedPatient.cpf}
-                      </Typography>
-                      <Typography fontSize={20}>
-                        Data de nascimento: {selectedPatient.data_nascimento}
-                      </Typography>
-                      <Typography fontSize={20}>
-                        Telefone: {selectedPatient.telefone}
-                      </Typography>
-                      <Typography fontSize={20}>
-                        Convênio: {selectedPatient.id_convenio}{" "}
-                        {/* vai ser feito a busca no db pelo nome do convenio correspondente ao id */}
-                      </Typography>
-                    </Box>
+                      {editPatient ? (
+                        <>
+                          <TextField
+                            {...register("nome")}
+                            label="Nome"
+                            value={editPatient.nome}
+                            fullWidth
+                            onChange={(e) =>
+                              setEditPatient({
+                                ...editPatient,
+                                nome: e.target.value,
+                              })
+                            }
+                          />
+                          <InputMask
+                            mask="999.999.999-99"
+                            {...register("cpf")}
+                            value={editPatient.cpf}
+                            onChange={(e) =>
+                              setEditPatient({
+                                ...editPatient,
+                                cpf: e.target.value,
+                              })
+                            }
+                          >
+                            {(inputProps: any) => (
+                              <TextField {...inputProps} label="CPF" />
+                            )}
+                          </InputMask>
+                          {/* <TextField
+                            label="CPF"
+                            value={editPatient.cpf}
+                            {...register("cpf")}
+                            onChange={(e) =>
+                              setEditPatient({
+                                ...editPatient,
+                                cpf: e.target.value,
+                              })
+                            }
+                          /> */}
+                          <TextField
+                            label="Data de Nascimento"
+                            value={editPatient.data_nascimento}
+                            {...register("data_nascimento")}
+                            onChange={(e) =>
+                              setEditPatient({
+                                ...editPatient,
+                                data_nascimento: e.target.value,
+                              })
+                            }
+                          />
+                          <InputMask
+                            mask="(99) 99999-9999"
+                            {...register("telefone")}
+                            value={editPatient.telefone}
+                            onChange={(e) =>
+                              setEditPatient({
+                                ...editPatient,
+                                telefone: e.target.value,
+                              })
+                            }
+                          >
+                            {(inputProps: any) => (
+                              <TextField {...inputProps} label="Telefone" />
+                            )}
+                          </InputMask>
+                          {/* <TextField
+                            label="Telefone"
+                            value={editPatient.telefone}
+                            {...register("telefone")}
+                            onChange={(e) =>
+                              setEditPatient({
+                                ...editPatient,
+                                telefone: e.target.value,
+                              })
+                            }
+                          /> */}
+                          <TextField
+                            label="Convênio"
+                            value={editPatient.id_convenio}
+                            {...register("id_convenio")}
+                            onChange={(e) =>
+                              setEditPatient({
+                                ...editPatient,
+                                id_convenio: e.target.value,
+                              })
+                            }
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <TextField
+                            label="Nome"
+                            value={selectedPatient.nome}
+                            disabled
+                          />
+                          <TextField
+                            label="CPF"
+                            value={selectedPatient.cpf}
+                            disabled
+                          />
+                          <TextField
+                            label="Data de Nascimento"
+                            value={selectedPatient.data_nascimento}
+                            disabled
+                          />
+
+                          <TextField
+                            label="Telefone"
+                            value={selectedPatient.telefone}
+                            disabled
+                          />
+                          <TextField
+                            label="Convênio"
+                            value={selectedPatient.id_convenio}
+                            disabled
+                          />
+                        </>
+                      )}
+                    </FormControl>
                     <Box
                       display="flex"
                       flexDirection="column"
                       alignItems="flex-end"
+                      gap={3}
                     >
-                      <Button
-                        title="Atualizar dados"
-                        variant="contained"
-                        disabled={isLoading}
-                        sx={{
-                          width: "220px",
-                          background: currentTheme === "dark" ? "" : "",
-                        }}
-                        startIcon={<EditIcon />}
-                        onClick={() => atualizarDadosPaciente(selectedPatient)}
-                      />
+                      {!editPatient ? (
+                        <Button
+                          title="Atualizar dados"
+                          variant="contained"
+                          disabled={isLoading}
+                          sx={{
+                            width: "220px",
+                            height: "56px",
+                            background: currentTheme === "dark" ? "" : "",
+                          }}
+                          startIcon={<EditIcon />}
+                          onClick={() =>
+                            setPatientDataEditable(selectedPatient)
+                          }
+                        />
+                      ) : (
+                        <>
+                          <Button
+                            title="Salvar edição"
+                            variant="contained"
+                            color="warning"
+                            disabled={isLoading}
+                            sx={{
+                              width: "220px",
+                              height: "56px",
+                              background: currentTheme === "dark" ? "" : "",
+                            }}
+                            startIcon={<SaveAsIcon />}
+                            onClick={() => updatePatientData(selectedPatient)}
+                          />
+                          <Button
+                            title="Cancelar edição"
+                            variant="contained"
+                            color="error"
+                            // disabled={isLoading}
+                            sx={{
+                              width: "220px",
+                              height: "56px",
+                              background: currentTheme === "dark" ? "" : "",
+                            }}
+                            startIcon={<CloseIcon />}
+                            onClick={() => setEditPatient(null)}
+                          />
+                        </>
+                      )}
                     </Box>
                   </Box>
                 ) : (

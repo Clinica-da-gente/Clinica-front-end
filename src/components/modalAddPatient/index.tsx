@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 
 import Box from "@mui/material/Box";
 import * as yup from "yup";
@@ -8,11 +8,11 @@ import Modal from "@mui/material/Modal";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Dayjs } from "dayjs";
+import InputMask from "react-input-mask";
 
 import Button from "../Button";
 import { LoadingButton } from "@mui/lab";
 import {
-  Grid,
   Card,
   CardContent,
   FormGroup,
@@ -62,8 +62,8 @@ const ModalAddPatient = () => {
     cpf: yup
       .string()
       .required("CPF obrigatório")
-      .max(11, "CPF inválido")
-      .min(11, "CPF inválido"),
+      .max(14, "CPF inválido")
+      .min(14, "CPF inválido"),
     telefone: yup.string().required("Telefone obrigatório"),
     data_nascimento: yup.string().required("Data de nascimento obrigatória"),
     id_convenio: yup.string().required("Convênio obrigatório"),
@@ -71,6 +71,7 @@ const ModalAddPatient = () => {
       .string()
       .max(256, "Observações deve ter, no máximo, 256 caracteres"),
   });
+
   const {
     register,
     handleSubmit,
@@ -133,16 +134,20 @@ const ModalAddPatient = () => {
                   >
                     Cadastro de paciente
                   </Typography>
-                  <TextField
-                    margin="dense"
-                    size="small"
-                    label="CPF"
-                    {...register("cpf")}
-                    type={"text"}
-                    error={!!errors.cpf}
-                    helperText={errors.cpf?.message?.toString()}
-                    required
-                  />
+                  <InputMask mask="999.999.999-99" {...register("cpf")}>
+                    {(inputProps: any) => (
+                      <TextField
+                        {...inputProps}
+                        margin="dense"
+                        size="small"
+                        label="CPF"
+                        type={"text"}
+                        error={!!errors.cpf}
+                        helperText={errors.cpf?.message?.toString()}
+                        required
+                      />
+                    )}
+                  </InputMask>
                   <TextField
                     margin="dense"
                     size="small"
@@ -175,16 +180,21 @@ const ModalAddPatient = () => {
                       )}
                     />
                   </LocalizationProvider>
-                  <TextField
-                    margin="dense"
-                    size="small"
-                    label="Telefone"
-                    {...register("telefone")}
-                    error={!!errors.telefone}
-                    helperText={errors.telefone?.message?.toString()}
-                    type={"text"}
-                    required
-                  />
+                  <InputMask mask="(99) 99999-9999" {...register("telefone")}>
+                    {(inputProps) => (
+                      <TextField
+                        {...inputProps}
+                        margin="dense"
+                        size="small"
+                        label="Telefone"
+                        {...register("telefone")}
+                        error={!!errors.telefone}
+                        helperText={errors.telefone?.message?.toString()}
+                        type={"text"}
+                        required
+                      />
+                    )}
+                  </InputMask>
                   <FormControl>
                     <InputLabel
                       id="demo-simple-select-label"
