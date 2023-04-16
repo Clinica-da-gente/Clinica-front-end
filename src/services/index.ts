@@ -22,7 +22,7 @@ export const getUserInfo = async () => {
 };
 
 export const getAllPatients = async () => {
-  return await api.get("/pacientes");
+  return await api.get("/pacientes").then((res) => res.data);
 };
 
 export const imgur_api = axios.create({

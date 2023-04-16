@@ -8,26 +8,22 @@ const PatientsContext = createContext<any>({} as any);
 
 export const PatientsProvider = ({ children }: any) => {
   const [patients, setPatients] = useState<any>([]);
-  console.log("patients ", patients);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const fetchPatients = async () => {
-    setIsLoading(true);
-
+    // setIsLoading(true);
     try {
       const res = await getAllPatients();
-      console.log("res ", res);
-      setPatients(res.data);
+      setPatients(res);
     } catch (err) {
       return false;
     }
-
-    setIsLoading(false);
+    // setIsLoading(false);
   };
 
   useEffect(() => {
     fetchPatients();
-  }, []);
+  }, [setPatients]);
 
   const reload = () => {
     fetchPatients();

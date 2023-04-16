@@ -7,6 +7,7 @@ import {
   Card,
   CardContent,
   FormControl,
+  FormGroup,
   TextField,
   Typography,
 } from "@mui/material";
@@ -22,24 +23,9 @@ import ModalAddPatient from "../../../../components/modalAddPatient";
 import * as Yup from "yup";
 import { toast } from "react-hot-toast";
 import InputMask from "react-input-mask";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export const ListPatient = () => {
-  const [patients, setPatients] = useState<any>([]);
-  const [selectedPatient, setSelectedPatient] = useState<any>(null);
-  const [editPatient, setEditPatient] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [lastAppointment, setLastAppointment] = useState<any>([
-    { data: "25/02/2023", tipo: "consulta", profissional: "Dr. Lin Habey" },
-    { data: "29/02/2023", tipo: "exame geral", profissional: "Dra. Isadora" },
-  ]);
-
-  const { currentTheme } = useTheme();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ defaultValues: { ...editPatient } });
-
   const schema = Yup.object().shape({
     cpf: Yup.string().required("CPF é obrigatório"),
     data_nascimento: Yup.string().required("Data de nascimento é obrigatória"),
@@ -50,14 +36,21 @@ export const ListPatient = () => {
     nome: Yup.string().required("Nome é obrigatório"),
     telefone: Yup.string().required("Telefone é obrigatório"),
   });
+  const [selectedPatient, setSelectedPatient] = useState<any>(null);
+  const [editPatient, setEditPatient] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [lastAppointment, setLastAppointment] = useState<any>([
+    { data: "25/02/2023", tipo: "consulta", profissional: "Dr. Lin Habey" },
+    { data: "29/02/2023", tipo: "exame geral", profissional: "Dra. Isadora" },
+  ]);
 
-  const getPatients = async () => {
-    await api.get("/pacientes").then((res) => setPatients(res.data));
-  };
-
-  useEffect(() => {
-    getPatients();
-  }, [patients]);
+  const { currentTheme } = useTheme();
+  const { patients } = usePatients();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({ resolver: yupResolver(schema) });
 
   const verConsulta = (value: any) => {
     try {
@@ -77,7 +70,7 @@ export const ListPatient = () => {
     const token = localStorage.getItem("@UserToken");
     setIsLoading(true);
     try {
-      await api.patch(`pacientes/${value._id}`, editPatient, {
+      await api.patch(`pacientes/${editPatient._id}`, editPatient, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -144,7 +137,7 @@ export const ListPatient = () => {
               >
                 {selectedPatient && selectedPatient !== undefined ? (
                   <Box width="100%" display="flex" gap={3}>
-                    <FormControl
+                    <FormGroup
                       sx={{
                         display: "flex",
                         flex: 1,
@@ -166,6 +159,8 @@ export const ListPatient = () => {
                                 nome: e.target.value,
                               })
                             }
+                            error={!!errors.nome}
+                            helperText={errors.nome?.message?.toString()}
                           />
                           <InputMask
                             mask="999.999.999-99"
@@ -177,6 +172,8 @@ export const ListPatient = () => {
                                 cpf: e.target.value,
                               })
                             }
+                            error={!!errors.cpf}
+                            helperText={errors.cpf?.message?.toString()}
                           >
                             {(inputProps: any) => (
                               <TextField {...inputProps} label="CPF" />
@@ -203,6 +200,8 @@ export const ListPatient = () => {
                                 data_nascimento: e.target.value,
                               })
                             }
+                            error={!!errors.data_nascimento}
+                            helperText={errors.data_nascimento?.message?.toString()}
                           />
                           <InputMask
                             mask="(99) 99999-9999"
@@ -214,6 +213,8 @@ export const ListPatient = () => {
                                 telefone: e.target.value,
                               })
                             }
+                            error={!!errors.telefone}
+                            helperText={errors.telefone?.message?.toString()}
                           >
                             {(inputProps: any) => (
                               <TextField {...inputProps} label="Telefone" />
@@ -240,6 +241,8 @@ export const ListPatient = () => {
                                 id_convenio: e.target.value,
                               })
                             }
+                            error={!!errors.id_convenio}
+                            helperText={errors.id_convenio?.message?.toString()}
                           />
                         </>
                       ) : (
@@ -272,7 +275,7 @@ export const ListPatient = () => {
                           />
                         </>
                       )}
-                    </FormControl>
+                    </FormGroup>
                     <Box
                       display="flex"
                       flexDirection="column"
@@ -297,6 +300,7 @@ export const ListPatient = () => {
                       ) : (
                         <>
                           <Button
+                            type="submit"
                             title="Salvar edição"
                             variant="contained"
                             color="warning"
