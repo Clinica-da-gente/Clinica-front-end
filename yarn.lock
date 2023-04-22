@@ -1071,11 +1071,6 @@ hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.3.1:
   dependencies:
     react-is "^16.7.0"
 
-imask@^6.6.0-alpha.0:
-  version "6.6.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/imask/-/imask-6.6.0-alpha.0.tgz#526ff2255c01e3b85f1f594b4bf097f23fb32254"
-  integrity sha512-p6ID0cMx0K2AouxMGsFLqdCfdFfn02IkSwe7SLPW2f9cwmbAojiktQ+SDi01S4ZdJ+eACa6IKRjjG2ZbJiXPmA==
-
 import-fresh@^3.2.1:
   version "3.3.0"
   resolved "https://registry.npmjs.org/import-fresh/-/import-fresh-3.3.0.tgz"
@@ -1286,21 +1281,14 @@ react-icons@^4.7.1:
   resolved "https://registry.npmjs.org/react-icons/-/react-icons-4.7.1.tgz"
   integrity sha512-yHd3oKGMgm7zxo3EA7H2n7vxSoiGmHk5t6Ou4bXsfcgWyhfDKMpyKfhHR6Bjnn63c+YXBLBPUql9H4wPJM6sXw==
 
-react-imask@^6.6.0-alpha.0:
-  version "6.6.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/react-imask/-/react-imask-6.6.0-alpha.0.tgz#5df7ae40a37bee8250109ffd63164aa851d5b494"
-  integrity sha512-4Bgs7jNzWp5L9YJqXQS/wQbIqQSAvikbWmgq3RqJxXhxPW++mTc8SROsb7/147zEzJLa9/IIUZ4/3D+pbQXkxw==
-  dependencies:
-    imask "^6.6.0-alpha.0"
-    prop-types "^15.8.1"
-
-react-input-mask@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/react-input-mask/-/react-input-mask-2.0.4.tgz#9ade5cf8196f4a856dbf010820fe75a795f3eb14"
-  integrity sha512-1hwzMr/aO9tXfiroiVCx5EtKohKwLk/NT8QlJXHQ4N+yJJFyUuMT+zfTpLBwX/lK3PkuMlievIffncpMZ3HGRQ==
+react-input-mask@^3.0.0-alpha.2:
+  version "3.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/react-input-mask/-/react-input-mask-3.0.0-alpha.2.tgz#113102942a557edc7a192e66020b8ce1ba699a5c"
+  integrity sha512-9U7qL+mvDMOJcbOFPdt6Vj+zzmCMNnBjhhjGDrL8BGQmymgvMVKhu/oOVfAkl+5VWOsLr+G3EhZOmae5fBcAkA==
   dependencies:
     invariant "^2.2.4"
-    warning "^4.0.2"
+    prop-types "^15.7.2"
+    warning "^4.0.3"
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
@@ -1498,7 +1486,7 @@ vite@^4.0.0:
   optionalDependencies:
     fsevents "~2.3.2"
 
-warning@^4.0.2:
+warning@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/warning/-/warning-4.0.3.tgz#16e9e077eb8a86d6af7d64aa1e05fd85b4678ca3"
   integrity sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==

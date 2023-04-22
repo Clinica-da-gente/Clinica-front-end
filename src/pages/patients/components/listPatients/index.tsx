@@ -24,6 +24,7 @@ import * as Yup from "yup";
 import { toast } from "react-hot-toast";
 import InputMask from "react-input-mask";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { SelectPatient } from "../../../../components/SelectPatient";
 
 export const ListPatient = () => {
   const schema = Yup.object().shape({
@@ -36,16 +37,23 @@ export const ListPatient = () => {
     nome: Yup.string().required("Nome é obrigatório"),
     telefone: Yup.string().required("Telefone é obrigatório"),
   });
-  const [selectedPatient, setSelectedPatient] = useState<any>(null);
-  const [editPatient, setEditPatient] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [selectedPatient, setSelectedPatient] = useState<any>(null);
+  // const [editPatient, setEditPatient] = useState<any>(null);
   const [lastAppointment, setLastAppointment] = useState<any>([
     { data: "25/02/2023", tipo: "consulta", profissional: "Dr. Lin Habey" },
     { data: "29/02/2023", tipo: "exame geral", profissional: "Dra. Isadora" },
   ]);
 
   const { currentTheme } = useTheme();
-  const { patients } = usePatients();
+  const {
+    patients,
+    selectedPatient,
+    setSelectedPatient,
+    editPatient,
+    setEditPatient,
+    updatePatientAux,
+    isLoading,
+  } = usePatients();
   const {
     register,
     handleSubmit,
@@ -54,37 +62,17 @@ export const ListPatient = () => {
 
   const verConsulta = (value: any) => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
     } catch (error) {
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
     console.log(value);
   };
 
-  const setPatientDataEditable = (value: any) => {
-    setEditPatient(value);
-  };
-
-  const updatePatientData = async (value: any) => {
-    const token = localStorage.getItem("@UserToken");
-    setIsLoading(true);
-    try {
-      await api.patch(`pacientes/${editPatient._id}`, editPatient, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      toast.success("Paciente atualizado sucesso!");
-    } catch (error) {
-      console.log(error);
-      toast.error("Ocorreu um erro, tente novamente!");
-    } finally {
-      setIsLoading(false);
-      setSelectedPatient(editPatient);
-      setEditPatient(null);
-    }
-  };
+  // const setPatientDataEditable = (value: any) => {
+  //   setEditPatient(value);
+  // };
 
   return (
     <Box pt={2}>
@@ -106,28 +94,7 @@ export const ListPatient = () => {
             gap={3}
           >
             <Box flex={1}>
-              <Autocomplete
-                getOptionLabel={(option: any) => option.nome || ""}
-                isOptionEqualToValue={(option: any, value: any) => {
-                  if (!option || !value) {
-                    return false;
-                  }
-                  return option.nome === value.nome;
-                }}
-                options={patients}
-                value={selectedPatient}
-                onChange={(event, value: any) => {
-                  setSelectedPatient(value);
-                }}
-                noOptionsText="Nenhum paciente encontrado"
-                renderInput={(params: any) => (
-                  <TextField
-                    {...params}
-                    label="Digite ou selecione o nome do paciente"
-                    value={selectedPatient ? selectedPatient.nome : ""}
-                  />
-                )}
-              />
+              <SelectPatient />
               <Box
                 display="flex"
                 height="88%"
@@ -144,7 +111,7 @@ export const ListPatient = () => {
                         flexDirection: "column",
                         gap: 3,
                       }}
-                      onSubmit={handleSubmit(updatePatientData)}
+                      onSubmit={handleSubmit(updatePatientAux)}
                     >
                       {editPatient ? (
                         <>
@@ -293,9 +260,7 @@ export const ListPatient = () => {
                             background: currentTheme === "dark" ? "" : "",
                           }}
                           startIcon={<EditIcon />}
-                          onClick={() =>
-                            setPatientDataEditable(selectedPatient)
-                          }
+                          onClick={() => setEditPatient(selectedPatient)}
                         />
                       ) : (
                         <>
@@ -311,7 +276,7 @@ export const ListPatient = () => {
                               background: currentTheme === "dark" ? "" : "",
                             }}
                             startIcon={<SaveAsIcon />}
-                            onClick={() => updatePatientData(selectedPatient)}
+                            onClick={() => updatePatientAux(selectedPatient)}
                           />
                           <Button
                             title="Cancelar edição"
