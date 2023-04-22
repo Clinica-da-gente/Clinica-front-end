@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 
 import Box from "@mui/material/Box";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Dayjs } from "dayjs";
+import InputMask from "react-input-mask";
 
 import Button from "../Button";
 import { LoadingButton } from "@mui/lab";
 import {
-  Grid,
   Card,
   CardContent,
   FormGroup,
@@ -22,36 +24,98 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
+import { useForm } from "react-hook-form";
+import api from "../../services";
+import { toast } from "react-hot-toast";
 
 const style = {
-  position: "absolute" as "absolute",
+  position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "inherit",
-  border: "2px solid #000",
+  width: 600,
   boxShadow: 24,
-  p: 4,
 };
 
 const ModalAddPatient = () => {
-  const convenioList = ["Privado", "São Judas Tadeu", "Bom Plano"];
+  const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [convenio, setConvenio] = useState("");
+  const [value, setValue] = useState<Dayjs | null>(null);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setTest(event.target.value as string);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    reset();
+    setValue(null);
+    setConvenio("");
+    setOpen(false);
   };
 
-  const [value, setValue] = useState<Dayjs | null>(null);
-  const [test, setTest] = useState("");
+  const convenioList = [
+    { id: 1, nome: "Privado" },
+    { id: 2, nome: "São Judas Tadeu" },
+    { id: 3, nome: "Bom Plano" },
+  ];
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const formSchema = yup.object().shape({
+    nome: yup.string().required("Nome obrigatório"),
+    cpf: yup
+      .string()
+      .required("CPF obrigatório")
+      .max(14, "CPF inválido")
+      .min(14, "CPF inválido"),
+    telefone: yup.string().required("Telefone obrigatório"),
+    data_nascimento: yup.string().required("Data de nascimento obrigatória"),
+    id_convenio: yup.string().required("Convênio obrigatório"),
+    observacoes: yup
+      .string()
+      .max(256, "Observações deve ter, no máximo, 256 caracteres"),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(formSchema),
+  });
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setConvenio(event.target.value as string);
+  };
+
+  const handleFunction = async (data: any) => {
+    const token = localStorage.getItem("@UserToken");
+    setIsLoading(true);
+    try {
+      await api.post("/pacientes", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      toast.success("Paciente cadastrado com sucesso!");
+    } catch (error) {
+      console.log(error);
+      toast.error("Ocorreu um erro, tente novamente!");
+    } finally {
+      setIsLoading(false);
+      handleClose();
+    }
+  };
 
   return (
     <>
-      <Button title="Cadastrar Paciente" onClick={handleOpen} />
+      <Button
+        title="Cadastrar Paciente"
+        onClick={handleOpen}
+        variant="contained"
+        sx={{
+          width: "100%",
+          height: "58px",
+          marginBottom: "1rem",
+        }}
+      />
       <Modal
         open={open}
         onClose={handleClose}
@@ -59,22 +123,9 @@ const ModalAddPatient = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {/* <Grid
-            container
-            sx={{
-              flexGrow: 1,
-              minHeight: "100vh",
-              height: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              gap: "12px",
-            }}
-          > */}
-          {/* <img src={Logo} style={{ width: "160px" }} /> */}
           <Card sx={{ padding: "0.4rem" }}>
             <CardContent>
-              <form>
+              <form onSubmit={handleSubmit(handleFunction)}>
                 <FormGroup>
                   <Typography
                     variant="h5"
@@ -83,26 +134,34 @@ const ModalAddPatient = () => {
                   >
                     Cadastro de paciente
                   </Typography>
-                  <TextField
-                    margin="dense"
-                    size="small"
-                    label="CPF"
-                    // {...register("email")}
-                    type={"text"}
-                    required
-                  />
+                  <InputMask mask="999.999.999-99" {...register("cpf")}>
+                    {(inputProps: any) => (
+                      <TextField
+                        {...inputProps}
+                        margin="dense"
+                        size="small"
+                        label="CPF"
+                        type={"text"}
+                        error={!!errors.cpf}
+                        helperText={errors.cpf?.message?.toString()}
+                        required
+                      />
+                    )}
+                  </InputMask>
                   <TextField
                     margin="dense"
                     size="small"
                     label="Nome completo"
-                    // {...register("email")}
+                    {...register("nome")}
                     type={"text"}
+                    error={!!errors.nome}
+                    helperText={errors.nome?.message?.toString()}
                     required
                   />
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
+                      mask="__/__/____"
                       label="Data de nascimento"
-                      inputFormat="dd/MM/yyyy"
                       value={value}
                       onChange={(newValue) => {
                         setValue(newValue);
@@ -112,19 +171,30 @@ const ModalAddPatient = () => {
                           {...params}
                           margin="dense"
                           size="small"
+                          type="date"
+                          {...register("data_nascimento")}
+                          error={!!errors.data_nascimento}
+                          helperText={errors.data_nascimento?.message?.toString()}
                           required
                         />
                       )}
                     />
                   </LocalizationProvider>
-                  <TextField
-                    margin="dense"
-                    size="small"
-                    label="Telefone"
-                    // {...register("email")}
-                    type={"text"}
-                    required
-                  />
+                  <InputMask mask="(99) 99999-9999" {...register("telefone")}>
+                    {(inputProps) => (
+                      <TextField
+                        {...inputProps}
+                        margin="dense"
+                        size="small"
+                        label="Telefone"
+                        {...register("telefone")}
+                        error={!!errors.telefone}
+                        helperText={errors.telefone?.message?.toString()}
+                        type={"text"}
+                        required
+                      />
+                    )}
+                  </InputMask>
                   <FormControl>
                     <InputLabel
                       id="demo-simple-select-label"
@@ -135,18 +205,17 @@ const ModalAddPatient = () => {
                       Convênio
                     </InputLabel>
                     <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={test}
-                      label="Convênio"
-                      margin="dense"
-                      size="small"
+                      labelId="convenio-label"
+                      id="convenio"
+                      value={convenio}
+                      {...register("id_convenio")}
+                      error={!!errors.id_convenio}
                       onChange={handleChange}
                     >
                       {convenioList.map((item, index) => {
                         return (
-                          <MenuItem key={index} value={item}>
-                            {item}
+                          <MenuItem key={index} value={item.id}>
+                            {item.nome}
                           </MenuItem>
                         );
                       })}
@@ -156,7 +225,9 @@ const ModalAddPatient = () => {
                     margin="dense"
                     size="small"
                     label="Observações"
-                    // {...register("email")}
+                    {...register("observacoes")}
+                    error={!!errors.observacoes}
+                    helperText={errors.observacoes?.message?.toString()}
                     type={"text"}
                   />
 
@@ -166,14 +237,15 @@ const ModalAddPatient = () => {
                     size="medium"
                     type="submit"
                     variant="contained"
-                    // loading={loading}
+                    loading={isLoading}
                   >
-                    Login
+                    Cadastrar
                   </LoadingButton>
                   <Button
-                    title="Esqueci a senha"
+                    title="Cancelar"
                     sx={{ margin: "12px 0 0" }}
                     variant="outlined"
+                    onClick={handleClose}
                   />
                 </FormGroup>
               </form>

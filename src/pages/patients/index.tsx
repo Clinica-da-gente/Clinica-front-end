@@ -1,5 +1,11 @@
+import { ListPatient } from "./components/listPatients";
+
 const Patients = () => {
-  return <div>Patients</div>;
+  return (
+    <>
+      <ListPatient />
+    </>
+  );
 };
 
 export default Patients;
