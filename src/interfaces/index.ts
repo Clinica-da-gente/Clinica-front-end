@@ -13,7 +13,14 @@ export interface ILogin {
   password: string;
 }
 
-export type IUserTypes = "doctor" | "admin" | "attendant" | "" | null | undefined | void;
+export type IUserTypes =
+  | "doctor"
+  | "admin"
+  | "attendant"
+  | ""
+  | null
+  | undefined
+  | void;
 
 export type IPages = IUserTypes | "login";
 
@@ -24,4 +31,19 @@ export interface ILoginContext {
   verifyUserAuthentication: () => Promise<IUserTypes> | void;
   logOut: () => void;
 }
+
+export interface IPatientContext {
+  // currentloggedUserType: IUserTypes;
+  getPatients: () => Promise<IPatient[]>;
+}
+
+export interface IPatient {
+  cpf: string;
+  data_nascimento: string;
+  email: string;
+  id_convenio: string;
+  nome: string;
+  telefone: string;
+}
+
 export type ILocalStorageTheme = "dark" | "light";

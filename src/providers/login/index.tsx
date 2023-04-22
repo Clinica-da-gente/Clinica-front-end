@@ -11,14 +11,14 @@ try {
     ? JSON.parse(localStorage.getItem("@UserInfo") || "")
     : null;
 
-  const { is_superuser, is_staff } = userInfoInLocalStorage;
+  const { e_admin, e_medico } = userInfoInLocalStorage;
 
   userTypeInLocalStorage = userInfoInLocalStorage
-    ? is_superuser
+    ? e_admin
       ? "admin"
-      : is_staff
-      ? "attendant"
-      : "doctor"
+      : e_medico
+      ? "doctor"
+      : "attendant"
     : "";
 } catch (err) {}
 
@@ -28,17 +28,17 @@ export const LoginProvider = ({ children }: IProvider) => {
 
   const changeLoggedUser = (type: IUserTypes) => setCurrentloggedUserType(type);
 
-  const setUserInfo = () => {
-    return getUserInfo().then((res) => {
-      const { is_staff, is_superuser } = res.data;
+  const setUserInfo = async () => {
+    return await getUserInfo().then((res) => {
+      const { e_medico, e_admin } = res.data;
       localStorage.setItem("@UserInfo", JSON.stringify(res.data));
-      return is_superuser ? "admin" : is_staff ? "attendant" : "doctor";
+      return e_admin ? "admin" : e_medico ? "doctor" : "attendant";
     });
   };
 
-  const login = ({ email, password }: ILogin) => {
-    return userLogin({ email, password }).then(async (res) => {
-      localStorage.setItem("@UserToken", res.data.access);
+  const login = async ({ email, password }: ILogin) => {
+    return await userLogin({ email, password }).then(async (res) => {
+      localStorage.setItem("@UserToken", res.data.token);
       localStorage.setItem("@ultimoLogin", String(new Date().valueOf()));
       return await setUserInfo();
     });
@@ -72,8 +72,7 @@ export const LoginProvider = ({ children }: IProvider) => {
         login,
         verifyUserAuthentication,
         logOut,
-      }}
-    >
+      }}>
       {children}
     </LoginContext.Provider>
   );

@@ -62,6 +62,7 @@ const LoginPage = () => {
     setLoading(true);
     await login({ email, password })
       .then(async (userType) => {
+
         await new Promise((resolve) => handleSuccessLogin(resolve, userType));
       })
       .catch((err) => toast.error("Credenciais inválidas"));
@@ -90,71 +91,66 @@ const LoginPage = () => {
             justifyContent: "center",
             flexDirection: "column",
             gap: "12px",
-          }}
-        >
+          }}>
           <img src={Logo} style={{ width: "160px" }} />
-          <Card variant="outlined" sx={{ padding: "0.4rem" }}>
+          <Card variant='outlined' sx={{ padding: "0.4rem" }}>
             <CardContent>
               <form onSubmit={handleSubmit(handleLogin)}>
                 <FormGroup>
                   <Typography
-                    variant="h5"
-                    component="h1"
-                    sx={{ margin: "0px 0 12px" }}
-                  >
+                    variant='h5'
+                    component='h1'
+                    sx={{ margin: "0px 0 12px" }}>
                     Login
                   </Typography>
                   <TextField
-                    margin="dense"
-                    size="small"
-                    label="Email"
+                    margin='dense'
+                    size='small'
+                    label='Email'
                     {...register("email")}
                     type={"email"}
                     required
                   />
                   <FormControl
-                    size="small"
-                    margin="dense"
-                    variant="outlined"
-                    required
-                  >
-                    <InputLabel htmlFor="outlined-adornment-password">
+                    size='small'
+                    margin='dense'
+                    variant='outlined'
+                    required>
+                    <InputLabel htmlFor='outlined-adornment-password'>
                       Password
                     </InputLabel>
                     <OutlinedInput
                       {...register("password")}
-                      id="outlined-adornment-password"
+                      id='outlined-adornment-password'
                       type={showPassword ? "text" : "password"}
                       endAdornment={
-                        <InputAdornment position="end">
+                        <InputAdornment position='end'>
                           <IconButton
-                            size="small"
-                            aria-label="toggle password visibility"
+                            size='small'
+                            aria-label='toggle password visibility'
                             onClick={handleClickShowPassword}
                             onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
+                            edge='end'>
                             {showPassword ? <Visibility /> : <VisibilityOff />}
                           </IconButton>
                         </InputAdornment>
                       }
-                      label="Password"
+                      label='Password'
                     />
                   </FormControl>
                   <LoadingButton
                     sx={{ margin: "8px 0 0" }}
                     startIcon={<LockOpenIcon />}
-                    size="medium"
-                    type="submit"
-                    variant="contained"
-                    loading={loading}
-                  >
+                    size='medium'
+                    type='submit'
+                    variant='contained'
+                    loading={loading}>
                     Login
                   </LoadingButton>
                   <Button
-                    title="Esqueci a senha"
+                    title='Esqueci a senha'
                     sx={{ margin: "12px 0 0" }}
-                    variant="outlined"
+                    variant='outlined'
                   />
                 </FormGroup>
               </form>
@@ -165,8 +161,7 @@ const LoginPage = () => {
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={open}
-        onClick={handleClose}
-      >
+        onClick={handleClose}>
         <Lottie options={defaultOptions} width={"300px"} height={"300px"} />
       </Backdrop>
     </Container>
