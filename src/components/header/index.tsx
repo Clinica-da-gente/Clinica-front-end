@@ -60,6 +60,10 @@ const Header = () => {
     navigate(page);
   };
 
+  const toHome = () => {
+    navigate("/")
+  }
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -183,7 +187,7 @@ const Header = () => {
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography
-                    onClick={() => setting === "Sair" && logOut()}
+                    onClick={() => setting === "Sair" && logOut(toHome)}
                     textAlign="center"
                   >
                     {setting}

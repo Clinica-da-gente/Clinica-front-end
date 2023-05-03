@@ -13,7 +13,14 @@ export interface ILogin {
   password: string;
 }
 
-export type IUserTypes = "doctor" | "admin" | "attendant" | "" | null | undefined | void;
+export type IUserTypes =
+  | "doctor"
+  | "admin"
+  | "attendant"
+  | ""
+  | null
+  | undefined
+  | void;
 
 export type IPages = IUserTypes | "login";
 
@@ -22,6 +29,19 @@ export interface ILoginContext {
   changeLoggedUser: (params: IUserTypes) => void;
   login: (params: ILogin) => Promise<IUserTypes>;
   verifyUserAuthentication: () => Promise<IUserTypes> | void;
-  logOut: () => void;
+  logOut: (callback: Function) => void;
 }
 export type ILocalStorageTheme = "dark" | "light";
+
+export interface IConsult {
+  id: string;
+  horario: string;
+  paciente: string;
+  data_nascimento: string;
+}
+
+export interface IDoctorContext {
+  consults: IConsult[];
+  consultSelected: IConsult | undefined;
+  changeConsultSelected: (consult: IConsult | undefined) => void;
+}
