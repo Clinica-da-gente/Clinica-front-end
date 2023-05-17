@@ -34,30 +34,35 @@ export const Content = styled.div`
   flex-direction: column;
   border-radius: 8px;
 
+  div {
+    width: 100%;
+
+    input {
+      border: 1px solid lightgray;
+      border-radius: 8px;
+      width: calc(100% - 16px);
+      height: 40px;
+      padding: 8px;
+      margin: 8px;
+      font-size: 16px;
+
+      &:hover {
+        border-color: gray;
+      }
+
+      &:focus-visible {
+        outline: none;
+        border-color: black;
+      }
+    }
+  }
+
   h4 {
     margin: 0px;
-    padding: 8px 12px;
+    padding: 12.5px 12px;
     font-size: 20px;
     border-bottom: 1px solid lightgray;
     font-weight: normal;
-  }
-
-  input {
-    border: 1px solid lightgray;
-    border-radius: 8px;
-    height: 40px;
-    padding: 8px;
-    margin: 8px;
-    font-size: 16px;
-
-    &:hover {
-      border-color: gray;
-    }
-
-    &:focus-visible {
-      outline: none;
-      border-color: black;
-    }
   }
 
   ul {
@@ -68,6 +73,20 @@ export const Content = styled.div`
 
   p {
     margin: 10px auto;
+  }
+
+  .div_input {
+    position: relative;
+
+    ul {
+      display: none;
+    }
+
+    &:focus-within {
+      ul {
+        display: block;
+      }
+    }
   }
 `;
 

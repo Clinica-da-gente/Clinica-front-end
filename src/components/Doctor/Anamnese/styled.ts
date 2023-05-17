@@ -36,10 +36,17 @@ export const Content = styled.div`
 
   h4 {
     margin: 0px;
-    padding: 8px 12px;
+    padding: 12.5px 12px;
     font-size: 20px;
     border-bottom: 1px solid lightgray;
     font-weight: normal;
+  }
+
+  div {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 

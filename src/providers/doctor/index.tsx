@@ -1,22 +1,18 @@
-import { createContext, useContext, useMemo, useState } from "react";
-import { IProvider, IDoctorContext, IConsult } from "../../interfaces";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { IDoctorContext, IConsult, IConsult2 } from "../../interfaces/Doctor";
+import { IProvider } from "../../interfaces";
+import api from "../../services";
+import { Navigate } from "react-router-dom";
 
 const DoctorContext = createContext({} as IDoctorContext);
 
 export const DoctorProvider = ({ children }: IProvider) => {
-  const [consults, setConsults] = useState([
-    {
-      id: "8ca251fe-18e1-4a47-b90c-cf69a264d243",
-      horario: "09:00",
-      paciente: "Paciente 1",
-      data_nascimento: "10/10/2010",
-    },
-  ]);
+  const [consults, setConsults] = useState<IConsult2[] | undefined>();
   const [consultSelected, setConsultSelected] = useState<
-    IConsult | undefined
+    IConsult2 | undefined
   >();
 
-  const changeConsultSelected = (consult: IConsult | undefined) => {
+  const changeConsultSelected = (consult: IConsult2 | undefined) => {
     if (consult) {
       localStorage.setItem(
         "@Doctor_currentConsultSelected",
@@ -26,6 +22,16 @@ export const DoctorProvider = ({ children }: IProvider) => {
       localStorage.removeItem("@Doctor_currentConsultSelected");
     }
     setConsultSelected(consult);
+  };
+
+  const getConsults = async () => {
+    setConsults(undefined);
+    const result = await api.get("/consultas/doctor", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("@UserToken"),
+      },
+    });
+    setConsults(result.data);
   };
 
   useMemo(() => {
@@ -41,6 +47,7 @@ export const DoctorProvider = ({ children }: IProvider) => {
         consults,
         consultSelected,
         changeConsultSelected,
+        getConsults,
       }}>
       {children}
     </DoctorContext.Provider>

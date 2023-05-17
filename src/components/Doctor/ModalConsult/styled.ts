@@ -97,6 +97,7 @@ export const ContentBody = styled.div`
     div {
       flex: 1;
       border-radius: 0px 0px 8px 8px;
+      padding: 8px 12px;
     }
   }
 `;

@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import PatientTreatment from "../patientTreatment";
+import { useEffect, useMemo, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import PatientTreatment from "../PatientTreatment";
 import { Container, Content } from "./styled";
-import ModalConsult from "../modalConsult";
+import ModalConsult from "../ModalConsult";
 import { useDoctor } from "../../../providers/doctor";
 import Box from "../Box";
 import Button from "../Button";
+import api from "../../../services";
 
 const mock = [
   { data: "10/12/2021", medico: "Gastroenterologista" },
@@ -18,16 +19,19 @@ const mock = [
 
 const ConfirmConsult = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [consultModal, setConsultModal] = useState({});
+  const [latestConsults, setLatestConsults] = useState([]);
   const { changeConsultSelected, consultSelected } = useDoctor();
   const navigate = useNavigate();
 
-  const changeModalConsult = () => {
+  const changeModalConsult = (value: any) => {
+    setConsultModal(value);
     setOpenModal(!openModal);
   };
 
-  const attendConsult = () => {
-    console.log("AA");
-    navigate(`/consult/${consultSelected!.id}/anamnese`);
+  const attendConsult = async () => {
+    api.patch(`/consultas/${consultSelected!._id}`, { atendido: true });
+    navigate(`/consult/${consultSelected!._id}/anamnese`);
   };
 
   const closeCurrentConsultSelected = () => {
@@ -35,18 +39,25 @@ const ConfirmConsult = () => {
     navigate("/");
   };
 
-  useEffect(() => {
-    if (!localStorage.getItem("@UserToken")) {
-      return navigate("/");
-    }
-  }, []);
+  useMemo(() => {
+    api
+      .get(`/consultas/${consultSelected?.paciente._id}/latest`)
+      .then(({ data }) => setLatestConsults(data));
+  }, [consultSelected]);
+
+  if (!localStorage.getItem("@UserToken")) {
+    return <Navigate to={"/"} />;
+  }
+
   return (
     <Box>
-      <h1>01/01/2023 - 09:00 - Paciente 1</h1>
+      <h1>
+        {consultSelected?.horario} - {consultSelected?.paciente.nome}
+      </h1>
       <Container>
         <h3>Ultimos atendimentos</h3>
         <Content>
-          {mock.map((value, index) => (
+          {latestConsults.map((value, index) => (
             <PatientTreatment
               key={index}
               value={value}
@@ -55,7 +66,7 @@ const ConfirmConsult = () => {
           ))}
         </Content>
         <div>
-          <Button onClick={() => attendConsult()} bgColor={"green"}>
+          <Button onClick={attendConsult} bgColor={"green"}>
             ATENDER
           </Button>
           <Button onClick={closeCurrentConsultSelected} bgColor={"gray"}>
@@ -63,7 +74,12 @@ const ConfirmConsult = () => {
           </Button>
         </div>
       </Container>
-      {openModal && <ModalConsult closeModalConsult={changeModalConsult} />}
+      {openModal && (
+        <ModalConsult
+          value={consultModal}
+          closeModalConsult={changeModalConsult}
+        />
+      )}
     </Box>
   );
 };

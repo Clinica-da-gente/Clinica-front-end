@@ -8,6 +8,15 @@ export const Content = styled.div`
   border-radius: 8px;
   max-height: calc(100% - 62px);
 
+  .no_consult_div {
+    flex: 1;
+    display: flex;
+
+    p {
+      margin: 10px auto;
+    }
+  }
+
   .legenda_div {
     padding: 10px 20px 20px;
     border-top: 1px solid lightgrey;

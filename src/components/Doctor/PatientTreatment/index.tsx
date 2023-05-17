@@ -4,7 +4,7 @@ const PatientTreatment = ({ value, openModalConsult }: any) => {
   return (
     <Container onClick={() => openModalConsult(value)}>
       <span>
-        {value.data} - {value.medico}
+        {value.horario.split(" ")[0]} - {value.medico.especialidade}
       </span>
     </Container>
   );
