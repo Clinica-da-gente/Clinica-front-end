@@ -17,6 +17,7 @@
     "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest",
     "@mui/styled-engine-sc": "^5.11.0",
     "@mui/x-date-pickers": "^5.0.12",
+    "@react-pdf/renderer": "^3.1.9",
     "@types/react-lottie": "^1.2.6",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.2.5",
