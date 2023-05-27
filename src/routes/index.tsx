@@ -1,8 +1,8 @@
-import { Routes as Router, Route } from "react-router-dom";
+import { Routes as Router, Route, Navigate } from "react-router-dom";
 import DefaultLayout from "../layout/defaultLayout";
 import ExamBudget from "../pages/examBudget";
 import HomePage from "../pages/home";
-import NewAppointment from "../pages/newAppointment";
+import NewAppointment from "../pages/newAppointment/components/listDoctorAvailability";
 import PageNotFound from "../pages/pageNotFound";
 import Patients from "../pages/patients";
 import SearchAppointment from "../pages/searchAppointment";

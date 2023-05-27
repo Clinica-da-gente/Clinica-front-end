@@ -1,4 +1,4 @@
-import ModalAddPatient from "../../components/modalAddPatient";
+import ModalAddPatient from "../patients/components/modalAddPatient";
 
 const AdminPage = () => {
   return <div>Admin Page</div>;

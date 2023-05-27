@@ -1,32 +1,15 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-import { IPatient, IProvider } from "../../interfaces";
-
 import api from "../../services";
 import { toast } from "react-hot-toast";
 
-const PatientsContext = createContext<any>({} as any);
+const AppointmentContext = createContext<any>({} as any);
 
-export const PatientsProvider = ({ children }: any) => {
+export const AppointmentProvider = ({ children }: any) => {
   const [patients, setPatients] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedPatient, setSelectedPatient] = useState<any>(null);
   const [editPatient, setEditPatient] = useState<any>(null);
-
-  const fetchPatients = async () => {
-    // setIsLoading(true);
-    try {
-      const res = await api.get("/pacientes").then((res) => res.data);
-      setPatients(res);
-    } catch (err) {
-      return false;
-    }
-    // setIsLoading(false);
-  };
-
-  const reload = () => {
-    fetchPatients();
-  };
 
   const updatePatientAux = async () => {
     const token = localStorage.getItem("@UserToken");
@@ -48,18 +31,12 @@ export const PatientsProvider = ({ children }: any) => {
     }
   };
 
-  useEffect(() => {
-    fetchPatients();
-  }, [setPatients]);
-
   return (
-    <PatientsContext.Provider
+    <AppointmentContext.Provider
       value={{
         patients,
         isLoading,
-        reload,
         setPatients,
-        fetchPatients,
         selectedPatient,
         setSelectedPatient,
         editPatient,
@@ -68,8 +45,8 @@ export const PatientsProvider = ({ children }: any) => {
       }}
     >
       {children}
-    </PatientsContext.Provider>
+    </AppointmentContext.Provider>
   );
 };
 
-export const usePatients = () => useContext(PatientsContext);
+export const useAppointment = () => useContext(AppointmentContext);

@@ -30,6 +30,7 @@ export interface ILoginContext {
   login: (params: ILogin) => Promise<IUserTypes>;
   verifyUserAuthentication: () => Promise<IUserTypes> | void;
   logOut: () => void;
+  user: any;
 }
 
 export interface IPatientContext {

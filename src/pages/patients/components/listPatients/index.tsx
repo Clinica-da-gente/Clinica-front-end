@@ -1,16 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import {
-  Autocomplete,
-  Box,
-  Card,
-  CardContent,
-  FormControl,
-  FormGroup,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, FormGroup, TextField, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import CloseIcon from "@mui/icons-material/Close";
@@ -18,11 +9,9 @@ import Button from "../../../../components/Button";
 
 import { useTheme } from "../../../../providers/theme";
 import { usePatients } from "../../../../providers/patients";
-import api from "../../../../services";
-import ModalAddPatient from "../../../../components/modalAddPatient";
+import ModalAddPatient from "../modalAddPatient";
 import * as Yup from "yup";
-import { toast } from "react-hot-toast";
-import InputMask from "react-input-mask";
+// import InputMask from "react-input-mask";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SelectPatient } from "../../../../components/SelectPatient";
 import { DefaultScreenLayout } from "../../../../components/DefaultScreenLayout";
@@ -38,8 +27,7 @@ export const ListPatient = () => {
     nome: Yup.string().required("Nome é obrigatório"),
     telefone: Yup.string().required("Telefone é obrigatório"),
   });
-  // const [selectedPatient, setSelectedPatient] = useState<any>(null);
-  // const [editPatient, setEditPatient] = useState<any>(null);
+
   const [lastAppointment, setLastAppointment] = useState<any>([
     { data: "25/02/2023", tipo: "consulta", profissional: "Dr. Lin Habey" },
     { data: "29/02/2023", tipo: "exame geral", profissional: "Dra. Isadora" },
@@ -120,7 +108,19 @@ export const ListPatient = () => {
                         error={!!errors.nome}
                         helperText={errors.nome?.message?.toString()}
                       />
-                      <InputMask
+                      <TextField
+                        {...register("cpf")}
+                        value={editPatient.cpf}
+                        onChange={(e) =>
+                          setEditPatient({
+                            ...editPatient,
+                            cpf: e.target.value,
+                          })
+                        }
+                        error={!!errors.cpf}
+                        helperText={errors.cpf?.message?.toString()}
+                      />
+                      {/* <InputMask
                         mask="999.999.999-99"
                         {...register("cpf")}
                         value={editPatient.cpf}
@@ -136,7 +136,7 @@ export const ListPatient = () => {
                         {(inputProps: any) => (
                           <TextField {...inputProps} label="CPF" />
                         )}
-                      </InputMask>
+                      </InputMask> */}
                       {/* <TextField
                             label="CPF"
                             value={editPatient.cpf}
@@ -161,7 +161,20 @@ export const ListPatient = () => {
                         error={!!errors.data_nascimento}
                         helperText={errors.data_nascimento?.message?.toString()}
                       />
-                      <InputMask
+                      <TextField
+                        label="Data de Nascimento"
+                        {...register("telefone")}
+                        value={editPatient.telefone}
+                        onChange={(e) =>
+                          setEditPatient({
+                            ...editPatient,
+                            telefone: e.target.value,
+                          })
+                        }
+                        error={!!errors.telefone}
+                        helperText={errors.telefone?.message?.toString()}
+                      />
+                      {/* <InputMask
                         mask="(99) 99999-9999"
                         {...register("telefone")}
                         value={editPatient.telefone}
@@ -177,18 +190,7 @@ export const ListPatient = () => {
                         {(inputProps: any) => (
                           <TextField {...inputProps} label="Telefone" />
                         )}
-                      </InputMask>
-                      {/* <TextField
-                            label="Telefone"
-                            value={editPatient.telefone}
-                            {...register("telefone")}
-                            onChange={(e) =>
-                              setEditPatient({
-                                ...editPatient,
-                                telefone: e.target.value,
-                              })
-                            }
-                          /> */}
+                      </InputMask> */}
                       <TextField
                         label="Convênio"
                         value={editPatient.id_convenio}

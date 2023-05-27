@@ -1,5 +1,11 @@
-const NewAppointment = () => {
-  return <div>New Appointment Page</div>;
+import ListDoctorAvailability from "./components/listDoctorAvailability";
+
+const newAppointment = () => {
+  return (
+    <>
+      <ListDoctorAvailability />
+    </>
+  );
 };
 
-export default NewAppointment;
+export default newAppointment;

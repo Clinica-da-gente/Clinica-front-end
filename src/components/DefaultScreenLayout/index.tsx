@@ -7,13 +7,16 @@ export const DefaultScreenLayout = ({ children }: any) => {
       <Card
         sx={{
           width: "95%",
+          maxWidth: "1500px",
           height: "89vh",
           alignItems: "center",
           justifyContent: "center",
           m: "auto",
         }}
       >
-        <CardContent sx={{ height: "100%" }}>{children}</CardContent>
+        <CardContent sx={{ height: "100%", padding: 2 }}>
+          {children}
+        </CardContent>
       </Card>
     </Box>
   );
