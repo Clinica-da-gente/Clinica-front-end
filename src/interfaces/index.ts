@@ -29,8 +29,9 @@ export interface ILoginContext {
   changeLoggedUser: (params: IUserTypes) => void;
   login: (params: ILogin) => Promise<IUserTypes>;
   verifyUserAuthentication: () => Promise<IUserTypes> | void;
-  logOut: () => void;
+  logOut: (callback: Function) => void;
 }
+
 
 export interface IPatientContext {
   // currentloggedUserType: IUserTypes;

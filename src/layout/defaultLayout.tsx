@@ -1,10 +1,15 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, Navigate } from "react-router-dom";
 import Header from "../components/header";
 import { IPages } from "../interfaces";
 import { useLogin } from "../providers/login";
 
 const DefaultLayout = () => {
-  const { currentloggedUserType, logOut } = useLogin();
+  const { currentloggedUserType } = useLogin();
+  const location = useLocation();
+
+  if (location.pathname !== "/" && !localStorage.getItem("@UserToken")) {
+    return <Navigate to={"/"} />;
+  }
 
   const page: IPages = currentloggedUserType ? currentloggedUserType : "login";
   return (

@@ -2,13 +2,16 @@ import { IProvider } from "../interfaces";
 import { LoginProvider } from "./login";
 import { PatientsProvider } from "./patients";
 import { ThemeProvider } from "./theme";
+import { DoctorProvider } from "./doctor";
 
 const Provider = ({ children }: IProvider) => {
   return (
     <LoginProvider>
-      <PatientsProvider>
-        <ThemeProvider>{children}</ThemeProvider>
-      </PatientsProvider>
+      <ThemeProvider>
+        <PatientsProvider>
+          <DoctorProvider>{children}</DoctorProvider>
+        </PatientsProvider>
+      </ThemeProvider>
     </LoginProvider>
   );
 };

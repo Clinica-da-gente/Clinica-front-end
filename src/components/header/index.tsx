@@ -28,7 +28,7 @@ const pages = [
 const settings = ["Perfil", "Conta", "Sair"];
 
 const Header = () => {
-  const { logOut } = useLogin();
+  const { logOut, currentloggedUserType } = useLogin();
   const navigate = useNavigate();
 
   const userInfo = JSON.parse(localStorage.getItem("@UserInfo") || "");
@@ -60,15 +60,19 @@ const Header = () => {
     navigate(page);
   };
 
+  const toHome = () => {
+    navigate("/");
+  };
+
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
+    <AppBar position='static'>
+      <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <LocalHospitalIcon
             sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
           />
           <Typography
-            variant="h6"
+            variant='h6'
             noWrap
             // component="a"
             // href="/"
@@ -82,24 +86,22 @@ const Header = () => {
               color: "inherit",
               textDecoration: "none",
               cursor: "pointer",
-            }}
-          >
+            }}>
             CLINICA
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
+              size='large'
+              aria-label='account of current user'
+              aria-controls='menu-appbar'
+              aria-haspopup='true'
               onClick={handleOpenNavMenu}
-              color="inherit"
-            >
+              color='inherit'>
               <MenuIcon />
             </IconButton>
             <Menu
-              id="menu-appbar"
+              id='menu-appbar'
               anchorEl={anchorElNav}
               anchorOrigin={{
                 vertical: "bottom",
@@ -114,11 +116,10 @@ const Header = () => {
               onClose={handleCloseNavMenu}
               sx={{
                 display: { xs: "block", md: "none" },
-              }}
-            >
+              }}>
               {pages.map((page, index) => (
                 <MenuItem key={index} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page.name}</Typography>
+                  <Typography textAlign='center'>{page.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -127,7 +128,7 @@ const Header = () => {
             sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
           />
           <Typography
-            variant="h5"
+            variant='h5'
             noWrap
             // component="a"
             // href=""
@@ -142,31 +143,32 @@ const Header = () => {
               color: "inherit",
               textDecoration: "none",
               cursor: "pointer",
-            }}
-          >
+            }}>
             CLINICA
           </Typography>
+
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page, index) => (
-              <Button
-                key={index}
-                onClick={() => handleChangePage(page.path)}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page.name}
-              </Button>
-            ))}
+            {currentloggedUserType == "doctor"
+              ? ""
+              : pages.map((page, index) => (
+                  <Button
+                    key={index}
+                    onClick={() => handleChangePage(page.path)}
+                    sx={{ my: 2, color: "white", display: "block" }}>
+                    {page.name}
+                  </Button>
+                ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Configurações">
+            <Tooltip title='Configurações'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt={userName} {...stringAvatar(userName)} />
               </IconButton>
             </Tooltip>
             <Menu
               sx={{ mt: "45px" }}
-              id="menu-appbar"
+              id='menu-appbar'
               anchorEl={anchorElUser}
               anchorOrigin={{
                 vertical: "top",
@@ -178,14 +180,12 @@ const Header = () => {
                 horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
+              onClose={handleCloseUserMenu}>
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography
-                    onClick={() => setting === "Sair" && logOut()}
-                    textAlign="center"
-                  >
+                    onClick={() => setting === "Sair" && logOut(toHome)}
+                    textAlign='center'>
                     {setting}
                   </Typography>
                 </MenuItem>

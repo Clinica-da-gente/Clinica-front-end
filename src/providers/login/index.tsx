@@ -56,12 +56,17 @@ export const LoginProvider = ({ children }: IProvider) => {
     return;
   };
 
-  const logOut = () => {
+  const logOut = (callback: Function) => {
     localStorage.removeItem("@UserToken");
     localStorage.removeItem("@ultimoLogin");
     localStorage.removeItem("@UserInfo");
     changeLoggedUser("");
     toast("Você foi deslogado");
+    callback();
+    history.pushState(null, "", location.href);
+    window.onpopstate = function () {
+      history.go(1);
+    };
   };
 
   return (
