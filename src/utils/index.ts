@@ -1,4 +1,4 @@
-export const compareTimePassedSinceLastLogin = (logout: ()=> void) => {
+export const compareTimePassedSinceLastLogin = (logout: (callback?: Function)=> void) => {
     if (localStorage.getItem("@ultimoLogin")) {
         const lastLogin = Number(localStorage.getItem("@ultimoLogin"));
         const now = new Date().valueOf();

@@ -29,7 +29,7 @@ export interface ILoginContext {
   changeLoggedUser: (params: IUserTypes) => void;
   login: (params: ILogin) => Promise<IUserTypes>;
   verifyUserAuthentication: () => Promise<IUserTypes> | void;
-  logOut: (callback: Function) => void;
+  logOut: (callback?: Function) => void;
   user: any;
 }
 
