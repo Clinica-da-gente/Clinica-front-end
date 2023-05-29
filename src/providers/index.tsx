@@ -1,5 +1,6 @@
 import { IProvider } from "../interfaces";
 import { LoginProvider } from "./login";
+import { PatientsProvider } from "./patients";
 import { ThemeProvider } from "./theme";
 import { DoctorProvider } from "./doctor";
 
@@ -7,7 +8,9 @@ const Provider = ({ children }: IProvider) => {
   return (
     <LoginProvider>
       <ThemeProvider>
-        <DoctorProvider>{children}</DoctorProvider>
+        <PatientsProvider>
+          <DoctorProvider>{children}</DoctorProvider>
+        </PatientsProvider>
       </ThemeProvider>
     </LoginProvider>
   );

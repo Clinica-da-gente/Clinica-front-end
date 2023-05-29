@@ -31,5 +31,20 @@ export interface ILoginContext {
   verifyUserAuthentication: () => Promise<IUserTypes> | void;
   logOut: (callback: Function) => void;
 }
-export type ILocalStorageTheme = "dark" | "light";
 
+
+export interface IPatientContext {
+  // currentloggedUserType: IUserTypes;
+  getPatients: () => Promise<IPatient[]>;
+}
+
+export interface IPatient {
+  cpf: string;
+  data_nascimento: string;
+  email: string;
+  id_convenio: string;
+  nome: string;
+  telefone: string;
+}
+
+export type ILocalStorageTheme = "dark" | "light";
