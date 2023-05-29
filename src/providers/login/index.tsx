@@ -1,7 +1,7 @@
-import { useContext, createContext, useState } from "react";
+import { useContext, createContext, useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { ILogin, IProvider, IUserTypes, ILoginContext } from "../../interfaces";
-import { getUserInfo, userLogin } from "../../services";
+import api, { getUserInfo, userLogin } from "../../services";
 
 const LoginContext = createContext<ILoginContext>({} as ILoginContext);
 
@@ -25,12 +25,14 @@ try {
 export const LoginProvider = ({ children }: IProvider) => {
   const [currentloggedUserType, setCurrentloggedUserType] =
     useState<IUserTypes>(userTypeInLocalStorage as IUserTypes);
+  const [user, setUser] = useState([]);
 
   const changeLoggedUser = (type: IUserTypes) => setCurrentloggedUserType(type);
 
   const setUserInfo = async () => {
     return await getUserInfo().then((res) => {
       const { e_medico, e_admin } = res.data;
+      setUser(res.data);
       localStorage.setItem("@UserInfo", JSON.stringify(res.data));
       return e_admin ? "admin" : e_medico ? "doctor" : "attendant";
     });
@@ -77,7 +79,9 @@ export const LoginProvider = ({ children }: IProvider) => {
         login,
         verifyUserAuthentication,
         logOut,
-      }}>
+        user,
+      }}
+    >
       {children}
     </LoginContext.Provider>
   );

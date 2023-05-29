@@ -10,7 +10,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Dayjs } from "dayjs";
 import InputMask from "react-input-mask";
 
-import Button from "../Button";
+import Button from "../../../../components/Button";
 import { LoadingButton } from "@mui/lab";
 import {
   Card,
@@ -25,7 +25,7 @@ import {
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { useForm } from "react-hook-form";
-import api from "../../services";
+import api from "../../../../services";
 import { toast } from "react-hot-toast";
 
 const style = {
@@ -134,7 +134,7 @@ const ModalAddPatient = () => {
                   >
                     Cadastro de paciente
                   </Typography>
-                  <InputMask mask="999.999.999-99" {...register("cpf")}>
+                  {/* <InputMask mask="999.999.999-99" {...register("cpf")}>
                     {(inputProps: any) => (
                       <TextField
                         {...inputProps}
@@ -147,7 +147,17 @@ const ModalAddPatient = () => {
                         required
                       />
                     )}
-                  </InputMask>
+                  </InputMask> */}
+                  <TextField
+                    {...register("cpf")}
+                    margin="dense"
+                    size="small"
+                    label="CPF"
+                    type={"text"}
+                    error={!!errors.cpf}
+                    helperText={errors.cpf?.message?.toString()}
+                    required
+                  />
                   <TextField
                     margin="dense"
                     size="small"
@@ -180,7 +190,7 @@ const ModalAddPatient = () => {
                       )}
                     />
                   </LocalizationProvider>
-                  <InputMask mask="(99) 99999-9999" {...register("telefone")}>
+                  {/* <InputMask mask="(99) 99999-9999" {...register("telefone")}>
                     {(inputProps) => (
                       <TextField
                         {...inputProps}
@@ -194,7 +204,18 @@ const ModalAddPatient = () => {
                         required
                       />
                     )}
-                  </InputMask>
+                  </InputMask> */}
+                  <TextField
+                    {...register("telefone")}
+                    margin="dense"
+                    size="small"
+                    label="Telefone"
+                    {...register("telefone")}
+                    error={!!errors.telefone}
+                    helperText={errors.telefone?.message?.toString()}
+                    type={"text"}
+                    required
+                  />
                   <FormControl>
                     <InputLabel
                       id="demo-simple-select-label"
@@ -244,7 +265,8 @@ const ModalAddPatient = () => {
                   <Button
                     title="Cancelar"
                     sx={{ margin: "12px 0 0" }}
-                    variant="outlined"
+                    variant="contained"
+                    color="error"
                     onClick={handleClose}
                   />
                 </FormGroup>
