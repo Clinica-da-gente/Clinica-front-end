@@ -98,7 +98,13 @@ const Anamnese = () => {
   useMemo(() => {
     api
       .get(`/anamneses/last/${consultSelected?.paciente_id}`)
-      .then(({ data }) => setLastAnamnese(data));
+      .then(({ data }) => {
+        if (data) {
+          setLastAnamnese(data);
+        } else {
+          setLastAnamnese({});
+        }
+      });
   }, []);
 
   if (!localStorage.getItem("@UserToken")) {
@@ -129,7 +135,9 @@ const Anamnese = () => {
           <h4>Ultima Anamnese</h4>
           {lastAnamnese ? (
             <StyledTextarea
-              value={lastAnamnese ? lastAnamnese.descricao : textAnamnese}
+              value={
+                lastAnamnese.descricao ? lastAnamnese.descricao : textAnamnese
+              }
               disabled
             />
           ) : (
@@ -143,9 +151,7 @@ const Anamnese = () => {
         <Button onClick={verifyAnamnese} bgColor={"green"}>
           SALVAR
         </Button>
-        <Button onClick={() => navigate("/pdf")} bgColor={"gray"}>
-          RECEITA
-        </Button>
+        <Button bgColor={"gray"}>RECEITA</Button>
         <Button
           onClick={() => navigate(`/consult/${id}/exams`)}
           bgColor={"#0062BC"}>

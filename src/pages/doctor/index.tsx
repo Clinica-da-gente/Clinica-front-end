@@ -1,4 +1,4 @@
-import { Content, ContentUl } from "./styled";
+import { Content, ContentUl1, ContentUl2 } from "./styled";
 import { useDoctor } from "../../providers/doctor";
 import AppointmentDoctor from "../../components/Doctor/AppointmentDoctor";
 import Box from "../../components/Doctor/Box";
@@ -7,14 +7,16 @@ import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
 const status = [
-  { color: "green", value: "Atendimento" },
+  { color: "whitesmoke", value: "Agendado" },
+  { color: "red", value: "Ausente" },
+  { color: "green", value: "Atendido" },
+  { color: "yellow", value: "Confirmado" },
   { color: "blue", value: "Sala de espera" },
-  { color: "red", value: "Horário vago ou ausente" },
 ];
 
 const DoctorPage = () => {
-  const { consults, getConsults } = useDoctor();
-
+  const { consultsWaiting, consultsToday, getConsults } = useDoctor();
+  
   useEffect(() => {
     getConsults();
     let interval = setInterval(() => {
@@ -32,16 +34,25 @@ const DoctorPage = () => {
     <Box>
       <h1>Seus próximos atendimentos</h1>
       <Content>
-        {consults ? (
-          consults.length ? (
-            <ContentUl>
-              {consults.map((value) => (
+        {consultsWaiting && consultsWaiting.length ? (
+          <ContentUl1>
+            {consultsWaiting.map((value) => (
+              <AppointmentDoctor key={value._id} consult={value} />
+            ))}
+          </ContentUl1>
+        ) : (
+          <></>
+        )}
+        {consultsToday ? (
+          consultsToday.length ? (
+            <ContentUl2>
+              {consultsToday.map((value) => (
                 <AppointmentDoctor key={value._id} consult={value} />
               ))}
-            </ContentUl>
+            </ContentUl2>
           ) : (
             <div className='no_consult_div'>
-              <p>Sem consulta no momento!</p>
+              <p>Sem consultas hoje!</p>
             </div>
           )
         ) : (
@@ -57,6 +68,7 @@ const DoctorPage = () => {
                   style={{
                     background: status.color,
                     borderRadius: "25px",
+                    border: "1px solid grey",
                     width: "30px",
                     height: "30px",
                   }}

@@ -1,16 +1,19 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { IDoctorContext, IConsult, IConsult2 } from "../../interfaces/Doctor";
+import { createContext, useContext, useMemo, useState } from "react";
+import { IDoctorContext, IConsult2, IExame } from "../../interfaces/Doctor";
 import { IProvider } from "../../interfaces";
 import api from "../../services";
-import { Navigate } from "react-router-dom";
 
 const DoctorContext = createContext({} as IDoctorContext);
 
 export const DoctorProvider = ({ children }: IProvider) => {
-  const [consults, setConsults] = useState<IConsult2[] | undefined>();
+  const [consultsWaiting, setConsultsWaiting] = useState<
+    IConsult2[] | undefined
+  >();
+  const [consultsToday, setConsultsToday] = useState<IConsult2[] | undefined>();
   const [consultSelected, setConsultSelected] = useState<
     IConsult2 | undefined
   >();
+  const [exams, setExams] = useState<IExame[] | undefined>([]);
 
   const changeConsultSelected = (consult: IConsult2 | undefined) => {
     if (consult) {
@@ -25,13 +28,24 @@ export const DoctorProvider = ({ children }: IProvider) => {
   };
 
   const getConsults = async () => {
-    setConsults(undefined);
+    setConsultsToday(undefined);
     const result = await api.get("/consultas/doctor", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("@UserToken"),
       },
     });
-    setConsults(result.data);
+    const array1: IConsult2[] = [];
+    const array2: IConsult2[] = [];
+    result.data.forEach((value: any) => {
+      if (value.status == "sala de espera") {
+        array1.push(value);
+      } else {
+        array2.push(value);
+      }
+    });
+
+    setConsultsWaiting(array1);
+    setConsultsToday(array2);
   };
 
   useMemo(() => {
@@ -39,13 +53,16 @@ export const DoctorProvider = ({ children }: IProvider) => {
     if (consult) {
       setConsultSelected(JSON.parse(consult));
     }
+    api.get("/exames").then(({ data }) => setExams(data));
   }, []);
 
   return (
     <DoctorContext.Provider
       value={{
-        consults,
+        consultsWaiting,
+        consultsToday,
         consultSelected,
+        exams,
         changeConsultSelected,
         getConsults,
       }}>

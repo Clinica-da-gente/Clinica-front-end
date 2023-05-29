@@ -1,28 +1,41 @@
 import { useDoctor } from "../../../providers/doctor";
+import { StyledTextarea } from "../Anamnese/styled";
+import ExamListItem from "../ExamListItem";
 import { Container, Content, ContentHeader, ContentBody } from "./styled";
 import { CgClose } from "react-icons/cg";
 
-const ModalConsult = ({ closeModalConsult, value }: any) => {
-  console.log(value);
+const ModalConsult = ({ closeModalConsult, consultModal }: any) => {
+  const { exams } = useDoctor();
   return (
     <Container>
       <Content>
         <ContentHeader>
           <h3>
-            {value.horario.split(" ").join(" - ")} - {value.medico.nome}
+            {consultModal?.data} - {consultModal?.medico.nome}
           </h3>
           <CgClose onClick={() => closeModalConsult()} />
         </ContentHeader>
         <ContentBody>
           <div>
             <h4>Anamnese da consulta</h4>
-            <div>{value.anamnese ? <></> : <span>Nenhuma anamnese</span>}</div>
+            <div>
+              {consultModal.anamnese ? (
+                <StyledTextarea disabled>
+                  {consultModal.anamnese.descricao}
+                </StyledTextarea>
+              ) : (
+                <span>Nenhuma anamnese</span>
+              )}
+            </div>
           </div>
           <div>
             <h4>Exames solicitados na consulta</h4>
             <div>
-              {value.exames ? (
-                <></>
+              {consultModal.exames ? (
+                consultModal.exames.exames.map((exam: any, index: number) => {
+                  const result = exams?.find((value) => value._id == exam.id);
+                  return <ExamListItem key={index} value={result} is_disable />;
+                })
               ) : (
                 <span>Não á exames para essa consulta</span>
               )}

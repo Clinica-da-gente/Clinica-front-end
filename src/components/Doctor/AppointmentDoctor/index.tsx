@@ -15,12 +15,24 @@ const AppointmentDoctor = ({ consult }: any) => {
   };
 
   return (
-    <Container onClick={onClick}>
+    <Container onClick={onClick} >
       <span>
-        {consulta.horario.split(" ")[1]} - {consulta.paciente.nome} -{" "}
+        {consulta.horario} - {consulta.paciente.nome} -{" "}
         {consulta.paciente.data_nascimento}
       </span>
-      <Content color='blue' />
+      <Content
+        color={
+          consult.status == "agendado"
+            ? "whitesmoke"
+            : consult.status == "ausente"
+            ? "red"
+            : consult.status == "atendido"
+            ? "green"
+            : consult.status == "confirmado"
+            ? "yellow"
+            : "blue"
+        }
+      />
     </Container>
   );
 };

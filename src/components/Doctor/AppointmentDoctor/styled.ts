@@ -16,6 +16,7 @@ export const Container = styled.li`
 export const Content = styled.div`
   background: ${(props) => props.color};
   border-radius: 25px;
+  border: 1px solid grey;
   width: 30px;
   height: 30px;
 `;

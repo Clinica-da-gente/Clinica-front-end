@@ -9,7 +9,6 @@ import SearchAppointment from "../pages/searchAppointment";
 import ConfirmConsult from "../components/Doctor/ConfirmConsult";
 import Anamnese from "../components/Doctor/Anamnese";
 import Exams from "../components/Doctor/Exams";
-import { RecipePDF } from "../components/Doctor/RecipePDF";
 
 const Routes = () => {
   return (
@@ -23,7 +22,6 @@ const Routes = () => {
         <Route element={<ConfirmConsult />} path={"/consult/:id"} />
         <Route element={<Anamnese />} path={"/consult/:id/anamnese"} />
         <Route element={<Exams />} path={"/consult/:id/exams"} />
-        <Route element={<RecipePDF />} path={"/pdf"} />
         <Route element={<PageNotFound />} path={"/*"} />
       </Route>
     </Router>

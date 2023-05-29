@@ -14,13 +14,26 @@ export const Container = styled.div`
     border-bottom: 1px solid lightgray;
   }
 
-  div {
+  .div_buttons {
     height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 32px;
     border-top: 1px solid lightgray;
+  }
+
+  .div_loader {
+    flex: 1;
+  }
+
+  .div_not_consult {
+    flex: 1;
+    display: flex;
+
+    p {
+      margin: 20px auto;
+    }
   }
 `;
 
