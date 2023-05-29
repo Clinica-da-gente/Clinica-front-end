@@ -9,7 +9,6 @@ export const Content = styled.div`
   max-height: calc(100% - 62px);
 
   .no_consult_div {
-    flex: 1;
     display: flex;
 
     p {
@@ -39,10 +38,22 @@ export const Content = styled.div`
   }
 `;
 
-export const ContentUl = styled.ul`
+export const ContentUl1 = styled.ul`
+  background: #fff;
+  margin: 0;
+  list-style: none;
+  padding: 0;
+  overflow-x: overlay;
+  border-radius: 8px 8px 0 0;
+
+  li:nth-child(1) {
+    border-bottom: 2px solid black;
+  }
+`;
+
+export const ContentUl2 = styled.ul`
   flex: 1;
   background: #fff;
-  border-radius: 8px;
   margin: 0;
   list-style: none;
   padding: 0;

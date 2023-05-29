@@ -1,6 +1,8 @@
 export interface IDoctorContext {
-  consults: IConsult2[] | undefined;
+  consultsWaiting: IConsult2[] | undefined;
+  consultsToday: IConsult2[] | undefined;
   consultSelected: IConsult2 | undefined;
+  exams: IExame[] | undefined;
   changeConsultSelected: (consult: IConsult2 | undefined) => void;
   getConsults: () => Promise<void>;
 }
@@ -22,15 +24,14 @@ export interface IConsult {
 
 export interface IConsult2 {
   _id: string;
+  data: string;
   horario: string;
   paciente_id: string;
   medico_id: string;
   usuario_id: string;
   descricao: string;
   pago: boolean;
-  confirmado: boolean;
-  compareceu: boolean;
-  cancelada: boolean;
+  status: string;
   atualizado_em: string;
   criado_em: string;
   paciente: {
@@ -74,4 +75,12 @@ export interface ILastExames {
   consulta_id?: string;
   medico_id?: string;
   paciente_id?: string;
+  medico?: {
+    e_admin: boolean;
+    e_medico: boolean;
+    email: string;
+    esta_ativo: boolean;
+    nome: string;
+    _id: string;
+  };
 }

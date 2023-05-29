@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import PatientTreatment from "../PatientTreatment";
 import { Container, Content } from "./styled";
@@ -7,20 +7,15 @@ import { useDoctor } from "../../../providers/doctor";
 import Box from "../Box";
 import Button from "../Button";
 import api from "../../../services";
-
-const mock = [
-  { data: "10/12/2021", medico: "Gastroenterologista" },
-  { data: "10/12/2023", medico: "Ginecologista" },
-  { data: "10/12/2022", medico: "Gastroenterologista" },
-  { data: "10/12/2020", medico: "Ginecologista" },
-  { data: "09/09/2021", medico: "Gastroenterologista" },
-  { data: "10/12/2021", medico: "Ginecologista" },
-];
+import { Loader } from "../Loader";
+import { ILastExames } from "../../../interfaces/Doctor";
 
 const ConfirmConsult = () => {
   const [openModal, setOpenModal] = useState(false);
   const [consultModal, setConsultModal] = useState({});
-  const [latestConsults, setLatestConsults] = useState([]);
+  const [latestConsults, setLatestConsults] = useState<
+    undefined | ILastExames[]
+  >();
   const { changeConsultSelected, consultSelected } = useDoctor();
   const navigate = useNavigate();
 
@@ -30,7 +25,7 @@ const ConfirmConsult = () => {
   };
 
   const attendConsult = async () => {
-    api.patch(`/consultas/${consultSelected!._id}`, { atendido: true });
+    api.patch(`/consultas/${consultSelected!._id}`, { status: "atendido" });
     navigate(`/consult/${consultSelected!._id}/anamnese`);
   };
 
@@ -56,19 +51,34 @@ const ConfirmConsult = () => {
       </h1>
       <Container>
         <h3>Ultimos atendimentos</h3>
-        <Content>
-          {latestConsults.map((value, index) => (
-            <PatientTreatment
-              key={index}
-              value={value}
-              openModalConsult={changeModalConsult}
-            />
-          ))}
-        </Content>
-        <div>
-          <Button onClick={attendConsult} bgColor={"green"}>
-            ATENDER
-          </Button>
+        {latestConsults ? (
+          latestConsults.length ? (
+            <Content>
+              {latestConsults.map((value, index) => (
+                <PatientTreatment
+                  key={index}
+                  value={value}
+                  openModalConsult={changeModalConsult}
+                />
+              ))}
+            </Content>
+          ) : (
+            <div className="div_not_consult">
+              <p>Sem atendimentos anteriores!</p>
+            </div>
+          )
+        ) : (
+          <div className='div_loader'>
+            <Loader />
+          </div>
+        )}
+
+        <div className='div_buttons'>
+          {consultSelected?.status == "sala de espera" && (
+            <Button onClick={attendConsult} bgColor={"green"}>
+              ATENDER
+            </Button>
+          )}
           <Button onClick={closeCurrentConsultSelected} bgColor={"gray"}>
             FECHAR
           </Button>
@@ -76,7 +86,7 @@ const ConfirmConsult = () => {
       </Container>
       {openModal && (
         <ModalConsult
-          value={consultModal}
+          consultModal={consultModal}
           closeModalConsult={changeModalConsult}
         />
       )}

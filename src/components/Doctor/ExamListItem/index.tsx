@@ -6,11 +6,11 @@ const ExamListItem = ({ value, is_disable, onClick }: any) => {
     <>
       {is_disable ? (
         <Container1>
-          <span>{value.nome}</span>
+          <span>{value?.nome}</span>
         </Container1>
       ) : (
         <Container2>
-          <span>{value.nome}</span>
+          <span>{value?.nome}</span>
           <CgClose onClick={onClick} />
         </Container2>
       )}

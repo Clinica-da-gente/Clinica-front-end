@@ -14,7 +14,6 @@ import { ModalConfirm } from "../ModalConfirm";
 import { toast } from "react-hot-toast";
 
 const Exams = ({}: any) => {
-  const [exams, setExams] = useState<IExame[] | undefined>([]);
   const [examsSelected, setExamsSelected] = useState<IExameId[]>(
     localStorage.getItem("@Doctor_exams")
       ? JSON.parse(localStorage.getItem("@Doctor_exams")!)
@@ -25,7 +24,7 @@ const Exams = ({}: any) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
-  const { consultSelected } = useDoctor();
+  const { consultSelected, exams } = useDoctor();
 
   const addExam = (id: string) => {
     setExamsSelected([...examsSelected, { id }]);
@@ -101,17 +100,16 @@ const Exams = ({}: any) => {
     api.post("/examesSolicitados", data).then(() => {
       setLastExams(data);
     });
+    localStorage.setItem("@Doctor_postExams", "1");
+    setExamsSelected([]);
   };
 
   useMemo(() => {
-    const examsInLocalStorage = localStorage.getItem("@Doctor_examsSelected");
+    const examsInLocalStorage = localStorage.getItem("@Doctor_exams");
     if (examsInLocalStorage) {
       setExamsSelected(JSON.parse(examsInLocalStorage));
     }
-  }, []);
 
-  useMemo(() => {
-    api.get("/exames").then(({ data }) => setExams(data));
     api.get(`/exames/last/${consultSelected?.paciente_id}`).then(({ data }) => {
       if (data) {
         setLastExams(data);
@@ -124,7 +122,10 @@ const Exams = ({}: any) => {
   return (
     <Box>
       <ContainerHeader>
-        <h1>01/01/2000 - 09:00 - Paciente 1 - Exames </h1>
+        <h1>
+          {consultSelected?.horario} - {consultSelected?.paciente?.nome} -
+          Exames{" "}
+        </h1>
         <CgClose onClick={confirmCloseConsult} />
       </ContainerHeader>
       <Container>
@@ -133,6 +134,9 @@ const Exams = ({}: any) => {
             <input
               placeholder='Digite o nome do exame'
               onChange={(e) => onChange(e.target.value)}
+              disabled={
+                localStorage.getItem("@Doctor_postExams") ? true : false
+              }
             />
             <DropdownExames
               exames={examsFilted && examsFilted.length ? examsFilted : exams}
