@@ -10,7 +10,7 @@ export const Content = styled.div`
 
   .no_consult_div {
     display: flex;
-
+    flex: 1;
     p {
       margin: 10px auto;
     }
