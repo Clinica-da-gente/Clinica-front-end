@@ -16,7 +16,7 @@ const status = [
 
 const DoctorPage = () => {
   const { consultsWaiting, consultsToday, getConsults } = useDoctor();
-  
+
   useEffect(() => {
     getConsults();
     let interval = setInterval(() => {
@@ -52,7 +52,7 @@ const DoctorPage = () => {
             </ContentUl2>
           ) : (
             <div className='no_consult_div'>
-              <p>Sem consultas hoje!</p>
+              {!consultsWaiting?.length ? <p>Sem consultas hoje!</p> : <></>}
             </div>
           )
         ) : (
