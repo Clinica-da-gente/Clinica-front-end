@@ -36,6 +36,10 @@ export const Content = styled.div`
       }
     }
   }
+
+  .no_consult_div {
+    flex: 1;
+  }
 `;
 
 export const ContentUl1 = styled.ul`
