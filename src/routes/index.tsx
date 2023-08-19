@@ -1,21 +1,21 @@
 import { Routes as Router, Route } from "react-router-dom";
 import DefaultLayout from "../layout/defaultLayout";
-import ExamBudget from "../pages/examBudget";
+import ExamBudget from "../pages/attendantPages/examBudget";
 import HomePage from "../pages/home";
-import NewAppointment from "../pages/newAppointment/components/listDoctorAvailability";
 import PageNotFound from "../pages/pageNotFound";
-import Patients from "../pages/patients";
-import SearchAppointment from "../pages/searchAppointment";
+import Patients from "../pages/doctorPages/patients";
+import SearchAppointment from "../pages/attendantPages/searchAppointment";
 import ConfirmConsult from "../components/Doctor/ConfirmConsult";
 import Anamnese from "../components/Doctor/Anamnese";
 import Exams from "../components/Doctor/Exams";
+import ModalBookNewAppointment from "../components/modalBookNewAppointment";
 
 const Routes = () => {
   return (
     <Router>
       <Route element={<DefaultLayout />} path="/">
         <Route element={<HomePage />} path={"/"} />
-        <Route element={<NewAppointment />} path={"/newAppointment"} />
+        <Route element={<ModalBookNewAppointment />} path={"/newAppointment"} />
         <Route element={<ExamBudget />} path={"/examBudget"} />
         <Route element={<SearchAppointment />} path={"/searchAppointment"} />
         <Route element={<Patients />} path={"/patients"} />

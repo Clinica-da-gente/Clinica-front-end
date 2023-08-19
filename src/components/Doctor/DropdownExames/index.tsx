@@ -1,5 +1,5 @@
-import { IExame } from "../../../interfaces/Doctor";
-import { Container } from "./styled";
+import { IExame } from '../../../interfaces/Doctor';
+import { Container } from './styled';
 
 const DropdownExames = ({ exames, addExam }: any) => {
   return (

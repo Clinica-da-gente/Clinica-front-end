@@ -1,5 +1,5 @@
-import { useParams } from "react-router-dom";
-import { Container, Content, ContentBody } from "./styled";
+import { useParams } from 'react-router-dom';
+import { Container, Content, ContentBody } from './styled';
 
 const ConsultDoctor = () => {
   const { id } = useParams();

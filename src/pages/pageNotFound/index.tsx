@@ -1,12 +1,12 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
-import Lottie from "react-lottie";
-import Lottie404 from "../../assets/lotties/404.json";
+// import Lottie from "react-lottie";
+// import Lottie404 from "../../assets/lotties/404.json";
 
 const PageNotFound = () => {
   const defaultOptions = {
     loop: true,
     autoplay: true,
-    animationData: Lottie404,
+    // animationData: Lottie404,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
     },
@@ -33,14 +33,14 @@ const PageNotFound = () => {
           alignItems: "center",
         }}
       >
-        <Lottie
+        {/* <Lottie
           options={defaultOptions}
           style={{
             alignItems: "center",
             display: "flex",
             justifyContent: "center",
           }}
-        />
+        /> */}
         <Typography variant="h6" component={"h1"}>
           Página não encontrada!
         </Typography>

@@ -1,4 +1,4 @@
-import { Container, Content, ContentBody, ContentHeader } from "./styled";
+import { Container, Content, ContentBody, ContentHeader } from './styled';
 
 const ModalConfirm = ({ children, onConfirm, setIsOpenModal }: any) => {
   const onClickYes = () => {
@@ -14,7 +14,7 @@ const ModalConfirm = ({ children, onConfirm, setIsOpenModal }: any) => {
       <Content>
         <ContentHeader>{children}</ContentHeader>
         <ContentBody>
-          <button onClick={onClickYes} className='yes_button'>
+          <button onClick={onClickYes} className="yes_button">
             SIM
           </button>
           <button onClick={onClickNo}>NÂO</button>

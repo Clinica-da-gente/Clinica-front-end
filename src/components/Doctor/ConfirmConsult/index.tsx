@@ -1,14 +1,14 @@
-import { useMemo, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import PatientTreatment from "../PatientTreatment";
-import { Container, Content } from "./styled";
-import ModalConsult from "../ModalConsult";
-import { useDoctor } from "../../../providers/doctor";
-import Box from "../Box";
-import Button from "../Button";
-import api from "../../../services";
-import { Loader } from "../Loader";
-import { ILastExames } from "../../../interfaces/Doctor";
+import { useMemo, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+import PatientTreatment from '../PatientTreatment';
+import { Container, Content } from './styled';
+import ModalConsult from '../ModalConsult';
+import { useDoctor } from '../../../providers/doctor';
+import Box from '../Box';
+import Button from '../Button';
+import api from '../../../services';
+import { Loader } from '../Loader';
+import { ILastExames } from '../../../interfaces/Doctor';
 
 const ConfirmConsult = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -25,13 +25,13 @@ const ConfirmConsult = () => {
   };
 
   const attendConsult = async () => {
-    api.patch(`/consultas/${consultSelected!._id}`, { status: "atendido" });
+    api.patch(`/consultas/${consultSelected!._id}`, { status: 'atendido' });
     navigate(`/consult/${consultSelected!._id}/anamnese`);
   };
 
   const closeCurrentConsultSelected = () => {
     changeConsultSelected(undefined);
-    navigate("/");
+    navigate('/');
   };
 
   useMemo(() => {
@@ -40,8 +40,8 @@ const ConfirmConsult = () => {
       .then(({ data }) => setLatestConsults(data));
   }, [consultSelected]);
 
-  if (!localStorage.getItem("@UserToken")) {
-    return <Navigate to={"/"} />;
+  if (!localStorage.getItem('@UserToken')) {
+    return <Navigate to={'/'} />;
   }
 
   return (
@@ -68,18 +68,18 @@ const ConfirmConsult = () => {
             </div>
           )
         ) : (
-          <div className='div_loader'>
+          <div className="div_loader">
             <Loader />
           </div>
         )}
 
-        <div className='div_buttons'>
-          {consultSelected?.status == "sala de espera" && (
-            <Button onClick={attendConsult} bgColor={"green"}>
+        <div className="div_buttons">
+          {consultSelected?.status == 'sala de espera' && (
+            <Button onClick={attendConsult} bgColor={'green'}>
               ATENDER
             </Button>
           )}
-          <Button onClick={closeCurrentConsultSelected} bgColor={"gray"}>
+          <Button onClick={closeCurrentConsultSelected} bgColor={'gray'}>
             FECHAR
           </Button>
         </div>

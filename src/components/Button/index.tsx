@@ -1,4 +1,4 @@
-import { Button as MUIButton, ButtonProps } from "@mui/material";
+import { Button as MUIButton, ButtonProps } from '@mui/material';
 
 interface MUIButtonProps extends ButtonProps {
   title: string;

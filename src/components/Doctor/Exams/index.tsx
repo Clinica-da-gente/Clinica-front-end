@@ -1,22 +1,22 @@
-import { useEffect, useMemo, useState } from "react";
-import Box from "../Box";
-import Button from "../Button";
-import { ContainerHeader, Container, Content, ContentButtons } from "./styled";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
-import ExamListItem from "../ExamListItem";
-import { CgClose } from "react-icons/cg";
-import { IExame, IExameId, ILastExames } from "../../../interfaces/Doctor";
-import api from "../../../services";
-import { Loader } from "../Loader";
-import { useDoctor } from "../../../providers/doctor";
-import { DropdownExames } from "../DropdownExames";
-import { ModalConfirm } from "../ModalConfirm";
-import { toast } from "react-hot-toast";
+import { useEffect, useMemo, useState } from 'react';
+import Box from '../Box';
+import Button from '../Button';
+import { ContainerHeader, Container, Content, ContentButtons } from './styled';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import ExamListItem from '../ExamListItem';
+import { CgClose } from 'react-icons/cg';
+import { IExame, IExameId, ILastExames } from '../../../interfaces/Doctor';
+import api from '../../../services';
+import { Loader } from '../Loader';
+import { useDoctor } from '../../../providers/doctor';
+import { DropdownExames } from '../DropdownExames';
+import { ModalConfirm } from '../ModalConfirm';
+import { toast } from 'react-hot-toast';
 
-const Exams = ({}: any) => {
+const Exams = () => {
   const [examsSelected, setExamsSelected] = useState<IExameId[]>(
-    localStorage.getItem("@Doctor_exams")
-      ? JSON.parse(localStorage.getItem("@Doctor_exams")!)
+    localStorage.getItem('@Doctor_exams')
+      ? JSON.parse(localStorage.getItem('@Doctor_exams')!)
       : [],
   );
   const [lastExames, setLastExams] = useState<ILastExames | undefined>();
@@ -29,19 +29,20 @@ const Exams = ({}: any) => {
   const addExam = (id: string) => {
     setExamsSelected([...examsSelected, { id }]);
     localStorage.setItem(
-      "@Doctor_exams",
+      '@Doctor_exams',
       JSON.stringify([...examsSelected, { id }]),
     );
   };
 
   const removeExam = (exam_id: string) => {
     const result = examsSelected!.filter(({ id }) => id !== exam_id);
+
     setExamsSelected(result);
-    localStorage.setItem("@Doctor_exams", JSON.stringify(result));
+    localStorage.setItem('@Doctor_exams', JSON.stringify(result));
   };
 
   const confirmCloseConsult = () => {
-    if (!localStorage.getItem("@Doctor_postExams")) {
+    if (!localStorage.getItem('@Doctor_postExams')) {
       setIsOpenModal(true);
     } else {
       closeConsult();
@@ -54,29 +55,30 @@ const Exams = ({}: any) => {
   };
 
   const closeConsult = async () => {
-    localStorage.removeItem("@Doctor_postExams");
-    localStorage.removeItem("@Doctor_textAnamnese");
-    localStorage.removeItem("@Doctor_exams");
-    localStorage.removeItem("@Doctor_postAnamnese");
-    localStorage.removeItem("@Doctor_exams");
-    navigate("/");
+    localStorage.removeItem('@Doctor_postExams');
+    localStorage.removeItem('@Doctor_textAnamnese');
+    localStorage.removeItem('@Doctor_exams');
+    localStorage.removeItem('@Doctor_postAnamnese');
+    localStorage.removeItem('@Doctor_exams');
+    navigate('/');
   };
 
   const onChange = (value: string) => {
     const result = exams!.filter((exam) =>
       exam.nome.toLowerCase().includes(value.toLowerCase()),
     );
+
     setExamsFilted(result);
   };
 
   const verifyExams = () => {
-    if (localStorage.getItem("@Doctor_postExams")) {
-      toast.error("Exames dessa consulta ja salvos!!", {
+    if (localStorage.getItem('@Doctor_postExams')) {
+      toast.error('Exames dessa consulta ja salvos!!', {
         duration: 3000,
         id,
       });
     } else if (!examsSelected.length) {
-      toast.error("Selecione os exames antes de salvar!!", {
+      toast.error('Selecione os exames antes de salvar!!', {
         duration: 2500,
         id,
       });
@@ -85,8 +87,8 @@ const Exams = ({}: any) => {
     }
   };
 
-  if (!localStorage.getItem("@UserToken")) {
-    return <Navigate to={"/"} />;
+  if (!localStorage.getItem('@UserToken')) {
+    return <Navigate to={'/'} />;
   }
 
   const postExams = () => {
@@ -97,15 +99,16 @@ const Exams = ({}: any) => {
       paciente_id: consultSelected!.paciente_id,
     };
 
-    api.post("/examesSolicitados", data).then(() => {
+    api.post('/examesSolicitados', data).then(() => {
       setLastExams(data);
     });
-    localStorage.setItem("@Doctor_postExams", "1");
+    localStorage.setItem('@Doctor_postExams', '1');
     setExamsSelected([]);
   };
 
   useMemo(() => {
-    const examsInLocalStorage = localStorage.getItem("@Doctor_exams");
+    const examsInLocalStorage = localStorage.getItem('@Doctor_exams');
+
     if (examsInLocalStorage) {
       setExamsSelected(JSON.parse(examsInLocalStorage));
     }
@@ -124,18 +127,18 @@ const Exams = ({}: any) => {
       <ContainerHeader>
         <h1>
           {consultSelected?.horario} - {consultSelected?.paciente?.nome} -
-          Exames{" "}
+          Exames{' '}
         </h1>
         <CgClose onClick={confirmCloseConsult} />
       </ContainerHeader>
       <Container>
         <Content>
-          <div className='div_input'>
+          <div className="div_input">
             <input
-              placeholder='Digite o nome do exame'
+              placeholder="Digite o nome do exame"
               onChange={(e) => onChange(e.target.value)}
               disabled={
-                localStorage.getItem("@Doctor_postExams") ? true : false
+                localStorage.getItem('@Doctor_postExams') ? true : false
               }
             />
             <DropdownExames
@@ -147,6 +150,7 @@ const Exams = ({}: any) => {
             <ul>
               {examsSelected.map(({ id }, index) => {
                 const result = exams!.find((exam) => exam._id == id);
+
                 return (
                   <ExamListItem
                     key={index}
@@ -166,6 +170,7 @@ const Exams = ({}: any) => {
             lastExames.exames?.length ? (
               lastExames.exames.map(({ id }, index) => {
                 const result = exams!.find((exam) => exam._id == id);
+
                 return <ExamListItem key={index} value={result} is_disable />;
               })
             ) : (
@@ -177,20 +182,21 @@ const Exams = ({}: any) => {
         </Content>
       </Container>
       <ContentButtons>
-        <Button bgColor={"green"} onClick={verifyExams}>
+        <Button bgColor={'green'} onClick={verifyExams}>
           SALVAR
         </Button>
-        <Button bgColor={"gray"}>RECEITA</Button>
+        <Button bgColor={'gray'}>RECEITA</Button>
         <Button
           onClick={() => navigate(`/consult/${id}/anamnese`)}
-          bgColor={"#0062BC"}>
+          bgColor={'#0062BC'}
+        >
           ANAMNESE
         </Button>
       </ContentButtons>
       {isOpenModal && (
         <ModalConfirm onConfirm={onConfirm} setIsOpenModal={setIsOpenModal}>
-          Gostaria de sair sem{" "}
-          {examsSelected.length ? "salvar os exames" : "solicitar nenhum exame"}
+          Gostaria de sair sem{' '}
+          {examsSelected.length ? 'salvar os exames' : 'solicitar nenhum exame'}
           ?
         </ModalConfirm>
       )}

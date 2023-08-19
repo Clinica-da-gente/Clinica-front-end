@@ -36,6 +36,7 @@ export const DoctorProvider = ({ children }: IProvider) => {
     });
     const array1: IConsult2[] = [];
     const array2: IConsult2[] = [];
+
     result.data.forEach((value: any) => {
       if (value.status == "sala de espera") {
         array1.push(value);
@@ -50,6 +51,7 @@ export const DoctorProvider = ({ children }: IProvider) => {
 
   useMemo(() => {
     const consult = localStorage.getItem("@Doctor_currentConsultSelected");
+
     if (consult) {
       setConsultSelected(JSON.parse(consult));
     }
