@@ -6,18 +6,18 @@ import { useLogin } from '../../providers/login'
 import { IPages } from '../../interfaces'
 
 const pages = {
-  doctor: <DoctorPage />,
-  attendant: <AttendantPage />,
-  admin: <AdminPage />,
-  login: <LoginPage />,
+    doctor: <DoctorPage />,
+    attendant: <AttendantPage />,
+    admin: <AdminPage />,
+    login: <LoginPage />,
 }
 
 const HomePage = () => {
-  const { currentloggedUserType } = useLogin()
+    const { currentloggedUserType } = useLogin()
 
-  const page: IPages = currentloggedUserType ? currentloggedUserType : 'login'
+    const page: IPages = currentloggedUserType ? currentloggedUserType : 'login'
 
-  return <>{pages[page]}</>
+    return <>{pages[page]}</>
 }
 
 export default HomePage

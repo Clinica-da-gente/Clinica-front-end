@@ -1,11 +1,11 @@
 import { ListPatient } from './components/listPatients'
 
 const Patients = () => {
-  return (
-    <>
-      <ListPatient />
-    </>
-  )
+    return (
+        <>
+            <ListPatient />
+        </>
+    )
 }
 
 export default Patients

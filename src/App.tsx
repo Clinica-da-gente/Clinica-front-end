@@ -10,27 +10,27 @@ import { useLogin } from './providers/login'
 import { Toaster } from 'react-hot-toast'
 
 const App = () => {
-  const { currentTheme } = useTheme()
-  const { verifyUserAuthentication } = useLogin()
-  const darkTheme = React.useMemo(
-    () => createTheme(getDesignTokens(currentTheme)),
-    [currentTheme],
-  )
+    const { currentTheme } = useTheme()
+    const { verifyUserAuthentication } = useLogin()
+    const darkTheme = React.useMemo(
+        () => createTheme(getDesignTokens(currentTheme)),
+        [currentTheme],
+    )
 
-  useEffect(() => {
-    verifyUserAuthentication()
-  }, [])
+    useEffect(() => {
+        verifyUserAuthentication()
+    }, [])
 
-  return (
-    <BrowserRouter>
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
-        <Routes />
-        <Toaster position="top-center" reverseOrder={false} />
-        <ThemeSwitcher />
-      </ThemeProvider>
-    </BrowserRouter>
-  )
+    return (
+        <BrowserRouter>
+            <ThemeProvider theme={darkTheme}>
+                <CssBaseline />
+                <Routes />
+                <Toaster position="top-center" reverseOrder={false} />
+                <ThemeSwitcher />
+            </ThemeProvider>
+        </BrowserRouter>
+    )
 }
 
 export default App

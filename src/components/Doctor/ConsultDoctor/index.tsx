@@ -2,9 +2,9 @@ import { useParams } from 'react-router-dom';
 import { Container, Content, ContentBody } from './styled';
 
 const ConsultDoctor = () => {
-  const { id } = useParams();
+    const { id } = useParams();
 
-  return <Container></Container>;
+    return <Container></Container>;
 };
 
 export default ConsultDoctor;

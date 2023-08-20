@@ -15,91 +15,91 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 const AvatarIcon = () => {
-  const { logOut, currentloggedUserType } = useLogin();
-  const navigate = useNavigate();
+    const { logOut, currentloggedUserType } = useLogin();
+    const navigate = useNavigate();
 
-  const accontType = {
-    doctor: 'Profissional de saúde',
-    attendant: 'Atendente',
-    admin: 'Admin',
-  };
+    const accontType = {
+        doctor: 'Profissional de saúde',
+        attendant: 'Atendente',
+        admin: 'Admin',
+    };
 
-  const userInfo = JSON.parse(localStorage.getItem('@UserInfo') || '');
-  const userName = userInfo.nome || 'user';
+    const userInfo = JSON.parse(localStorage.getItem('@UserInfo') || '');
+    const userName = userInfo.nome || 'user';
 
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null,
-  );
+    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+        null,
+    );
 
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
+    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElUser(event.currentTarget);
+    };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
 
-  const toHome = () => {
-    navigate('/');
-  };
+    const toHome = () => {
+        navigate('/');
+    };
 
-  return (
-    <Box sx={{ flexGrow: 0 }}>
-      <Tooltip title="Configurações">
-        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt={userName} {...stringAvatar(userName)} />
-        </IconButton>
-      </Tooltip>
-      <Menu
-        sx={{ mt: '45px' }}
-        id="menu-appbar"
-        anchorEl={anchorElUser}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        keepMounted
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        open={Boolean(anchorElUser)}
-        onClose={handleCloseUserMenu}
-      >
-        <MenuItem disabled style={{ opacity: 0.8 }}>
-          <ListItemIcon>
-            <AccountCircleIcon />
-          </ListItemIcon>
-          <ListItemText>Usuário: {userName}</ListItemText>
-        </MenuItem>
-        {currentloggedUserType ? (
-          <MenuItem disabled style={{ opacity: 0.8 }}>
-            <ListItemIcon>
-              <VerifiedUserIcon />
-            </ListItemIcon>
-            <ListItemText>
-              Conta: {accontType[currentloggedUserType]}
-            </ListItemText>
-          </MenuItem>
-        ) : null}
-        {currentloggedUserType !== 'doctor' && (
-          <MenuItem disabled style={{ opacity: 0.8 }}>
-            <ListItemIcon>
-              <AttachMoneyIcon />
-            </ListItemIcon>
-            <ListItemText>Caixa do dia R$:40,00</ListItemText>
-          </MenuItem>
-        )}
-        <Divider />
-        <MenuItem onClick={() => logOut(toHome)}>
-          <ListItemIcon>
-            <LogoutIcon />
-          </ListItemIcon>
-          <ListItemText>Sair</ListItemText>
-        </MenuItem>
-      </Menu>
-    </Box>
-  );
+    return (
+        <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Configurações">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt={userName} {...stringAvatar(userName)} />
+                </IconButton>
+            </Tooltip>
+            <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+            >
+                <MenuItem disabled style={{ opacity: 0.8 }}>
+                    <ListItemIcon>
+                        <AccountCircleIcon />
+                    </ListItemIcon>
+                    <ListItemText>Usuário: {userName}</ListItemText>
+                </MenuItem>
+                {currentloggedUserType ? (
+                    <MenuItem disabled style={{ opacity: 0.8 }}>
+                        <ListItemIcon>
+                            <VerifiedUserIcon />
+                        </ListItemIcon>
+                        <ListItemText>
+                            Conta: {accontType[currentloggedUserType]}
+                        </ListItemText>
+                    </MenuItem>
+                ) : null}
+                {currentloggedUserType !== 'doctor' && (
+                    <MenuItem disabled style={{ opacity: 0.8 }}>
+                        <ListItemIcon>
+                            <AttachMoneyIcon />
+                        </ListItemIcon>
+                        <ListItemText>Caixa do dia R$:40,00</ListItemText>
+                    </MenuItem>
+                )}
+                <Divider />
+                <MenuItem onClick={() => logOut(toHome)}>
+                    <ListItemIcon>
+                        <LogoutIcon />
+                    </ListItemIcon>
+                    <ListItemText>Sair</ListItemText>
+                </MenuItem>
+            </Menu>
+        </Box>
+    );
 };
 
 export default AvatarIcon;

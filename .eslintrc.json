@@ -21,7 +21,7 @@
     ],
     "rules": {
         "no-unexpected-multiline": "error",
-        "indent": ["error", 2],
+        "indent": ["error", 4],
         "react/react-in-jsx-scope": "off",
         "no-unused-vars": "warn",
         "no-duplicate-imports": "error",

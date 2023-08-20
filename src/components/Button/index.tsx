@@ -5,7 +5,7 @@ interface MUIButtonProps extends ButtonProps {
 }
 
 const Button = ({ title, ...rest }: MUIButtonProps) => {
-  return <MUIButton {...rest}>{title}</MUIButton>;
+    return <MUIButton {...rest}>{title}</MUIButton>;
 };
 
 export default Button;
