@@ -14,6 +14,7 @@ function App() {
             // Extrai informações do arquivo de certificado digital
             const info = await extractCertificateInfo(certificateFile);
             // Atualiza o estado do componente com as informações extraídas do certificado digital
+
             setCertificateInfo(info);
             // Atualiza o estado do componente com a data e hora atual
             setTimestamp(new Date());
@@ -23,18 +24,20 @@ function App() {
 
     async function getCertificateFileFromComputer() {
         // Lógica para solicitar ao usuário que selecione o arquivo de certificado digital com a extensão .cer
-        const fileHandle = await window.showOpenFilePicker({
-            types: [
-                {
-                    description: 'Arquivos de Certificado Digital',
-                    accept: {
-                        'application/x-x509-ca-cert': ['.cer']
-                    }
-                }
-            ]
-        });
-        const file = await fileHandle[0].getFile();
-        return file;
+        // const fileHandle = await window.showOpenFilePicker({
+        //     types: [
+        //         {
+        //             description: 'Arquivos de Certificado Digital',
+        //             accept: {
+        //                 'application/x-x509-ca-cert': ['.cer']
+        //             }
+        //         }
+        //     ]
+        // });
+        // const file = await fileHandle[0].getFile();
+
+        
+        // return file;
     }
 
     async function extractCertificateInfo(certificateFile: any) {
@@ -54,6 +57,8 @@ function App() {
                 .join(' '),
             notAfter: certificate.notAfter.value
         };
+
+        
         return info;
     }
 
