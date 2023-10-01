@@ -65,15 +65,15 @@ export const LoginProvider = ({ children }: IProvider) => {
 
     const verifyUserAuthentication = () => {
         if (localStorage.getItem('@UserToken')) {
-            return getUserInfo()
-                .then(async () => {
-                    const userType = await setUserInfo();
+            // return getUserInfo()
+            //     .then(async () => {
+            //         const userType = await setUserInfo();
 
-                    setCurrentloggedUserType(userType);
-                })
-                .catch(() => logOut());
+            //         setCurrentloggedUserType(userType);
+            //     })
+            //     .catch(() => logOut());
+            setCurrentloggedUserType('admin');
         }
-        setCurrentloggedUserType('admin');
 
         return;
     };

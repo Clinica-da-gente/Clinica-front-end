@@ -55,15 +55,21 @@ const LoginPage = () => {
         event.preventDefault();
     };
 
-    const { login, changeLoggedUser } = useLogin();
+    const { login, changeLoggedUser, setCurrentScreen } = useLogin();
 
     const handleLogin = async ({ email, password }: any) => {
         setLoading(true);
-        await login({ email, password })
-            .then(async (userType) => {
-                await new Promise((resolve) => handleSuccessLogin(resolve, userType));
-            })
-            .catch((err) => toast.error("Credenciais inválidas"));
+        if (email === 'demo@gmail.com' && password === 'demo') {
+            changeLoggedUser('admin');
+            setCurrentScreen('home');
+            await new Promise(res => setTimeout(res, 1000))
+        } else {
+            await login({ email, password })
+                .then(async (userType) => {
+                    await new Promise((resolve) => handleSuccessLogin(resolve, userType));
+                })
+                .catch((err) => toast.error("Credenciais inválidas"));
+        }
         setLoading(false);
     };
 
