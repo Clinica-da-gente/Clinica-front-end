@@ -1,10 +1,10 @@
 import { Container } from '@mui/material'
 import ServiceScreen from '../../../components/ServiceScreen'
 import { useLogin } from '../../../providers/login'
-import Patients from '../../doctorPages/patients'
-import ExamBudget from '../../attendantPages/examBudget'
-import SearchAppointment from '../../attendantPages/searchAppointment'
-import NewAppointment from '../../attendantPages/newAppointment'
+import Patients from '../../patients'
+import ExamBudget from '../../examBudget'
+import SearchAppointment from '../../searchAppointment'
+import NewAppointment from '../../newAppointment'
 
 const AttendantPage = () => {
     const { currentScreen } = useLogin()

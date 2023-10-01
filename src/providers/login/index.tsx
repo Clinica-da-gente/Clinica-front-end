@@ -73,6 +73,7 @@ export const LoginProvider = ({ children }: IProvider) => {
                 })
                 .catch(() => logOut());
         }
+        setCurrentloggedUserType('admin');
     
         return;
     };

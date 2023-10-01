@@ -6,7 +6,6 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 // import SuccessLotie from "../../assets/lotties/success.json";
 import {
     Backdrop,
-    // Button,
     Card,
     CardContent,
     FormControl,
@@ -102,7 +101,7 @@ const LoginPage = () => {
                                         component="h1"
                                         sx={{ margin: "0px 0 12px" }}
                                     >
-                    Login
+                                        Login
                                     </Typography>
                                     <TextField
                                         margin="dense"
@@ -119,7 +118,7 @@ const LoginPage = () => {
                                         required
                                     >
                                         <InputLabel htmlFor="outlined-adornment-password">
-                      Password
+                                            Password
                                         </InputLabel>
                                         <OutlinedInput
                                             {...register("password")}
@@ -149,7 +148,7 @@ const LoginPage = () => {
                                         variant="contained"
                                         loading={loading}
                                     >
-                    Login
+                                        Login
                                     </LoadingButton>
                                     <Button
                                         title="Esqueci a senha"

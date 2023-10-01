@@ -9,7 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { Dayjs } from 'dayjs'
 
-import Button from '../../../../../components/Button'
+import Button from '../../../../components/Button'
 import { LoadingButton } from '@mui/lab'
 import {
     Card,
@@ -24,7 +24,7 @@ import {
 } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
 import { useForm } from 'react-hook-form'
-import api from '../../../../../services'
+import api from '../../../../services'
 import { toast } from 'react-hot-toast'
 
 const style = {

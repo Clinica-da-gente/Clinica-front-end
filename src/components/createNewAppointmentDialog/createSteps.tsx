@@ -8,14 +8,12 @@ import Typography from '@mui/material/Typography';
 import {
     Autocomplete,
     Container,
-    DialogContentText,
     Divider,
     List,
     ListItem,
     ListItemText,
     TextField,
 } from '@mui/material';
-import { top100Films } from '../../pages/attendantPages/newAppointment/mockData';
 import { SelectPatient } from '../SelectPatient';
 
 const steps = [

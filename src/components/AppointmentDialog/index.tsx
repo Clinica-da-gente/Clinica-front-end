@@ -18,7 +18,7 @@ import {
     TableRow,
 } from '@mui/material';
 import { columns, rows } from './mockData';
-import ReceiveScreen from '../receiveScreen';
+import ReceiveScreen from '../ReceiveScreen';
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -62,7 +62,7 @@ export default function AppointmentDialog({ doctor, date }: any) {
                             <CloseIcon />
                         </IconButton>
                         <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Atendimento
+                        Atendimento
                         </Typography>
                         <Typography variant="h6" component="div">
                             {doctor} - {date.split('-').reverse().join('/')}
@@ -101,7 +101,7 @@ export default function AppointmentDialog({ doctor, date }: any) {
                                                             variant="contained"
                                                             size="small"
                                                         >
-                              Desmarcar
+                                                        Desmarcar
                                                         </Button>
                                                     </TableCell>
                                                 );

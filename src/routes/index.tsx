@@ -1,10 +1,10 @@
 import { Routes as Router, Route } from "react-router-dom";
 import DefaultLayout from "../layout/defaultLayout";
-import ExamBudget from "../pages/attendantPages/examBudget";
+import ExamBudget from "../pages/examBudget";
 import HomePage from "../pages/home";
 import PageNotFound from "../pages/pageNotFound";
-import Patients from "../pages/doctorPages/patients";
-import SearchAppointment from "../pages/attendantPages/searchAppointment";
+import Patients from "../pages/patients";
+import SearchAppointment from "../pages/searchAppointment";
 import ConfirmConsult from "../components/Doctor/ConfirmConsult";
 import Anamnese from "../components/Doctor/Anamnese";
 import Exams from "../components/Doctor/Exams";

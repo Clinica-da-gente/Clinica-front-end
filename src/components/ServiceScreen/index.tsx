@@ -40,7 +40,7 @@ export default function ServiceScreen() {
                 }}
             >
                 <Typography variant="h6" noWrap>
-          Atendimentos
+                Atendimentos
                 </Typography>
                 <TextField label="Data" value={date} size="small" type="date" />
             </Box>

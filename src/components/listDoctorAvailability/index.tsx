@@ -195,13 +195,6 @@ const ListDoctorAvailability = () => {
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        {/* <Button
-                      size="small"
-                      variant="contained"
-                      onClick={() => setBookNewAppointment(app)}
-                    >
-                      Agendar
-                    </Button> */}
                                         <ModalBookNewAppointment
                                             app={app}
                                             patient={selectedPatient}
@@ -221,7 +214,7 @@ const ListDoctorAvailability = () => {
                         >
                             {/* //principal */}
                             <Typography variant="h5" marginBottom={5} align="center">
-                Histórico do paciente
+                            Histórico do paciente
                             </Typography>
                             <Box display="flex" gap={2} flexDirection="column">
                                 {selectedPatient && selectedPatient !== undefined ? (
@@ -243,7 +236,7 @@ const ListDoctorAvailability = () => {
                                     })
                                 ) : (
                                     <Typography align="center">
-                    Selecione um paciente para ver os últimos atendimentos
+                                    Selecione um paciente para ver os últimos atendimentos
                                     </Typography>
                                 )}
                             </Box>

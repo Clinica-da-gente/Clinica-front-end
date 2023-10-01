@@ -18,14 +18,14 @@ const AvatarIcon = () => {
     const { logOut, currentloggedUserType } = useLogin();
     const navigate = useNavigate();
 
-    const accontType = {
+    const accountType = {
         doctor: 'Profissional de saúde',
         attendant: 'Atendente',
         admin: 'Admin',
     };
 
-    const userInfo = JSON.parse(localStorage.getItem('@UserInfo') || '');
-    const userName = userInfo.nome || 'user';
+    const userInfo = localStorage.getItem('@UserInfo') && JSON.parse(localStorage.getItem('@UserInfo') || '');
+    const userName = userInfo ? (userInfo.nome || 'user') : 'Anônimo';
 
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
         null,
@@ -78,7 +78,7 @@ const AvatarIcon = () => {
                             <VerifiedUserIcon />
                         </ListItemIcon>
                         <ListItemText>
-                            Conta: {accontType[currentloggedUserType]}
+                            Conta: {accountType[currentloggedUserType]}
                         </ListItemText>
                     </MenuItem>
                 ) : null}

@@ -5,16 +5,16 @@ import { Box, FormGroup, TextField, Typography } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import SaveAsIcon from '@mui/icons-material/SaveAs'
 import CloseIcon from '@mui/icons-material/Close'
-import Button from '../../../../../components/Button'
+import Button from '../../../../components/Button'
 
-import { useTheme } from '../../../../../providers/theme'
-import { usePatients } from '../../../../../providers/patients'
+import { useTheme } from '../../../../providers/theme'
+import { usePatients } from '../../../../providers/patients'
 import ModalAddPatient from '../modalAddPatient'
 import * as Yup from 'yup'
 // import InputMask from "react-input-mask";
 import { yupResolver } from '@hookform/resolvers/yup'
-import { SelectPatient } from '../../../../../components/SelectPatient'
-import { DefaultScreenLayout } from '../../../../../components/DefaultScreenLayout'
+import { SelectPatient } from '../../../../components/SelectPatient'
+import { DefaultScreenLayout } from '../../../../components/DefaultScreenLayout'
 
 export const ListPatient = () => {
     const schema = Yup.object().shape({
