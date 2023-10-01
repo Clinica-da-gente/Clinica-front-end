@@ -1,0 +1,72 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended"
+    ],
+    "overrides": [
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "no-unexpected-multiline": "error",
+        "indent": ["error", 4],
+        "react/react-in-jsx-scope": "off",
+        "no-unused-vars": "warn",
+        "no-duplicate-imports": "error",
+        "newline-after-var": "error",
+        "newline-before-return": "error",
+        "space-before-blocks": "error"
+    }
+}
+
+/* Para formatar automaticamente ao salvar projeto corrigindo erros do eslint: 
+- Faça ctrl + P no vscode
+- Vá em "Open User Settings JSON":
+- Configure
+{
+  "workbench.iconTheme": "material-icon-theme",
+  "editor.formatOnSave": true,
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+  "html.completion.attributeDefaultValue": "singlequotes",
+  "html.autoCreateQuotes": false,
+  
+  //******************
+  // Adicione essa parte
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll": true
+  },
+  //******************
+
+  "[prisma]": {
+    "editor.formatOnSave": true
+  },
+  "tabnine.experimentalAutoImports": true,
+
+  // *******Desabilite isso********
+  // "[typescriptreact]": {
+  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
+  // },
+  // "[javascriptreact]": {
+  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
+  // },
+
+  "errorLens.excludeBySource": ["eslint(prettier/prettier)"],
+  "terminal.integrated.env.linux": {},
+  "editor.fontSize": 16,
+  "window.zoomLevel": 2
+}
+*/

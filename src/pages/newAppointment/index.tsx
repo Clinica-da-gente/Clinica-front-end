@@ -1,11 +1,11 @@
-import ListDoctorAvailability from "./components/listDoctorAvailability";
+import ListDoctorAvailability from "../../components/listDoctorAvailability";
 
-const newAppointment = () => {
-  return (
-    <>
-      <ListDoctorAvailability />
-    </>
-  );
+const NewAppointment = () => {
+    return (
+        <>
+            <ListDoctorAvailability />
+        </>
+    );
 };
 
-export default newAppointment;
+export default NewAppointment;

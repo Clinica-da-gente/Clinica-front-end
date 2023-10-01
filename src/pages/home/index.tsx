@@ -1,30 +1,23 @@
-import LoginPage from "../login";
-import DoctorPage from "../doctor";
-import AttendantPage from "../attendant";
-import AdminPage from "../admin";
-import Header from "../../components/header";
-import { useLogin } from "../../providers/login";
-import { IPages } from "../../interfaces";
-import { compareTimePassedSinceLastLogin } from "../../utils";
+import LoginPage from '../login'
+import DoctorPage from './doctorHomePage'
+import AttendantPage from './attendantHomePage'
+import AdminPage from './adminHomePage'
+import { useLogin } from '../../providers/login'
+import { IPages } from '../../interfaces'
 
 const pages = {
-  doctor: <DoctorPage />,
-  attendant: <AttendantPage />,
-  admin: <AdminPage />,
-  login: <LoginPage />,
-};
+    doctor: <DoctorPage />,
+    attendant: <AttendantPage />,
+    admin: <AdminPage />,
+    login: <LoginPage />,
+}
 
 const HomePage = () => {
-  const { currentloggedUserType, logOut } = useLogin();
+    const { currentloggedUserType } = useLogin()
 
-  const page: IPages = currentloggedUserType ? currentloggedUserType : "login";
-  compareTimePassedSinceLastLogin(logOut);
-  return (
-    <>
-      {/* {page !== "login" && <Header />} */}
-      {pages[page]}
-    </>
-  );
-};
+    const page: IPages = currentloggedUserType ? currentloggedUserType : 'login'
 
-export default HomePage;
+    return <>{pages[page]}</>
+}
+
+export default HomePage

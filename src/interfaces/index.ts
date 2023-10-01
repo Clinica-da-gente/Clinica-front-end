@@ -1,4 +1,4 @@
-export interface IApp {}
+// export interface IApp {}
 
 export interface IProvider {
   children: React.ReactNode;
@@ -24,12 +24,16 @@ export type IUserTypes =
 
 export type IPages = IUserTypes | "login";
 
+export type IScreenType = "home" | "newAppointment" | "examBudged" | "searchAppointments" | "patients" | "doctors" | "exams" | "bank" | "profit" | "dept";
+
 export interface ILoginContext {
   currentloggedUserType: IUserTypes;
   changeLoggedUser: (params: IUserTypes) => void;
   login: (params: ILogin) => Promise<IUserTypes>;
   verifyUserAuthentication: () => Promise<IUserTypes> | void;
-  logOut: (callback?: Function) => void;
+  logOut: (callback: any) => void;
+  setCurrentScreen: (screen: IScreenType) => void;
+  currentScreen?: IScreenType;
   user: any;
 }
 
